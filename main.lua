@@ -57,10 +57,13 @@ local function notify(title,text,ntype)
     task.delay(3.5,function() tw(n,{Size=UDim2.new(1,0,0,0),BackgroundTransparency=1},0.18); task.wait(0.22); if n and n.Parent then n:Destroy() end end)
 end
 
--- CONTENT FRAME (top-left, no window frame)
-local CONT_W,CONT_H=374,310
+-- CONTENT FRAME (dark background + rounded corners)
+local CONT_W,CONT_H=374,318
 local contentFrame=Instance.new("Frame"); contentFrame.Size=UDim2.new(0,CONT_W,0,CONT_H)
-contentFrame.Position=UDim2.new(0,14,0,28); contentFrame.BackgroundTransparency=1; contentFrame.ClipsDescendants=false; contentFrame.ZIndex=2; contentFrame.Parent=gui
+contentFrame.Position=UDim2.new(0,14,0,28); contentFrame.BackgroundColor3=Color3.fromRGB(14,14,18)
+contentFrame.BackgroundTransparency=0.06; contentFrame.ClipsDescendants=true; contentFrame.ZIndex=2; contentFrame.Parent=gui
+cr(contentFrame,14); st(contentFrame,T.Border,1,0.5)
+pad(contentFrame,10,10,10,10)
 local contentLayout=Instance.new("UIListLayout"); contentLayout.Padding=UDim.new(0,7); contentLayout.Parent=contentFrame
 
 -- PAGE TITLE
@@ -282,8 +285,21 @@ end}
 local NAV_W,NAV_H=300,50
 local navWrap=Instance.new("Frame"); navWrap.Size=UDim2.new(0,NAV_W,0,NAV_H+20); navWrap.Position=UDim2.new(0.5,-NAV_W/2,1,-(NAV_H+18)); navWrap.BackgroundTransparency=1; navWrap.ZIndex=5; navWrap.Parent=gui
 
--- Expand arrow above nav
-local expandArrow=Instance.new("TextLabel"); expandArrow.Size=UDim2.new(1,0,0,16); expandArrow.BackgroundTransparency=1; expandArrow.Text="v"; expandArrow.TextColor3=T.TextMuted; expandArrow.TextSize=10; expandArrow.Font=Enum.Font.GothamBold; expandArrow.ZIndex=5; expandArrow.Parent=navWrap
+-- Collapse/Expand arrow button above nav
+local menuVisible=true
+local expandArrow=Instance.new("TextButton"); expandArrow.Size=UDim2.new(1,0,0,16); expandArrow.BackgroundTransparency=1; expandArrow.Text="v"; expandArrow.TextColor3=T.TextSec; expandArrow.TextSize=11; expandArrow.Font=Enum.Font.GothamBold; expandArrow.ZIndex=6; expandArrow.AutoButtonColor=false; expandArrow.Parent=navWrap
+expandArrow.MouseEnter:Connect(function() tw(expandArrow,{TextColor3=T.White},0.1) end)
+expandArrow.MouseLeave:Connect(function() tw(expandArrow,{TextColor3=T.TextSec},0.1) end)
+expandArrow.MouseButton1Click:Connect(function()
+    menuVisible=not menuVisible
+    if menuVisible then
+        expandArrow.Text="v"
+        tw(contentFrame,{Size=UDim2.new(0,CONT_W,0,CONT_H),BackgroundTransparency=0.06},0.28,Enum.EasingStyle.Back)
+    else
+        expandArrow.Text="^"
+        tw(contentFrame,{Size=UDim2.new(0,CONT_W,0,0),BackgroundTransparency=1},0.22,Enum.EasingStyle.Quart)
+    end
+end)
 
 local navPill=Instance.new("Frame"); navPill.Size=UDim2.new(1,0,0,NAV_H); navPill.Position=UDim2.new(0,0,0,16); navPill.BackgroundColor3=T.NavBG; navPill.BackgroundTransparency=0.06; navPill.BorderSizePixel=0; navPill.ZIndex=5; navPill.Parent=navWrap; cr(navPill,NAV_H/2); st(navPill,T.Border,1,0.5)
 
