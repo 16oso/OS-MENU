@@ -97,12 +97,19 @@ local WIN_W, WIN_H = 640, 460
 local SB = 52  -- sidebar width
 local TB = 50  -- topbar height
 
+-- Border container (UIStroke + ClipsDescendants = buggy in Roblox)
+local borderFrame = Instance.new("Frame")
+borderFrame.Name = "Border"; borderFrame.Size = UDim2.new(0,WIN_W+2,0,WIN_H+2)
+borderFrame.Position = UDim2.new(0.5,-(WIN_W+2)/2,0.5,-(WIN_H+2)/2)
+borderFrame.BackgroundColor3 = T.Border; borderFrame.BackgroundTransparency = 0.4
+borderFrame.BorderSizePixel = 0; borderFrame.Parent = gui; cr(borderFrame,13)
+
 local main = Instance.new("Frame")
 main.Name = "MainWindow"; main.Size = UDim2.new(0,WIN_W,0,WIN_H)
 main.Position = UDim2.new(0.5,-WIN_W/2,0.5,-WIN_H/2)
 main.BackgroundColor3 = T.BG; main.BackgroundTransparency = 0
 main.BorderSizePixel = 0; main.ClipsDescendants = true; main.Parent = gui
-cr(main,12); st(main,T.Border,1,0)
+cr(main,12)
 
 -- TOP BAR
 local topBar = Instance.new("Frame")
@@ -521,12 +528,12 @@ end
 
 -- SIDEBAR TAB BUTTONS
 local tabDefs = {
-    {name="Home",     icon="âŒ‚"},
-    {name="Player",   icon="â–£"},
-    {name="World",    icon="â—‰"},
-    {name="Tools",    icon="âš™"},
-    {name="Players",  icon="â—ˆ"},
-    {name="Settings", icon="â‰¡"},
+    {name="Home",     icon="Home"},
+    {name="Player",   icon="Me"},
+    {name="World",    icon="World"},
+    {name="Tools",    icon="Tools"},
+    {name="Players",  icon="List"},
+    {name="Settings", icon="Set"},
 }
 local activeTabBtn=nil
 
