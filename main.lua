@@ -1,13 +1,10 @@
 -- ============================================
--- TL MENU v6 â€” AudioCrafter Style
--- Purple Â· Cards Â· Bottom Tabs Â· Dark Glass
--- Einzeldatei fÃ¼r Executor (Xeno)
+-- TL MENU v6 -- Summer Vibes | Sidebar Edition
+-- Single File for Xeno Executor
 -- ============================================
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- [1] SERVICES
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local Players          = game:GetService("Players")
 local RunService       = game:GetService("RunService")
 local TweenService     = game:GetService("TweenService")
@@ -33,55 +30,29 @@ LocalPlayer.CharacterAdded:Connect(function(c)
     HRP       = c:WaitForChild("HumanoidRootPart")
 end)
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [2] THEME / PALETTE
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [2] THEME
 local T = {
-    -- Backgrounds (warm dark)
     BG          = Color3.fromRGB(10, 8, 14),
-    Panel       = Color3.fromRGB(14, 11, 20),
+    Sidebar     = Color3.fromRGB(13, 10, 19),
     Card        = Color3.fromRGB(20, 15, 28),
-    CardHover   = Color3.fromRGB(28, 20, 38),
-
-    -- Primary Accents (Purple -> Orange)
     Purple      = Color3.fromRGB(148, 43, 255),
     PurpleLight = Color3.fromRGB(178, 90, 255),
     PurpleDim   = Color3.fromRGB(90, 25, 160),
     Orange      = Color3.fromRGB(255, 110, 35),
     OrangeLight = Color3.fromRGB(255, 150, 70),
-    Pink        = Color3.fromRGB(255, 65, 130),
-
-    -- Neutral
     White       = Color3.fromRGB(255, 255, 255),
-
-    -- Typography
     TextPure    = Color3.fromRGB(255, 255, 255),
     TextMain    = Color3.fromRGB(225, 215, 240),
     TextSec     = Color3.fromRGB(155, 140, 175),
     TextMuted   = Color3.fromRGB(85, 72, 108),
-
-    -- Semantic
     Success     = Color3.fromRGB(45, 215, 125),
     Danger      = Color3.fromRGB(255, 65, 75),
     Warning     = Color3.fromRGB(255, 175, 35),
-
-    -- Borders
     Border      = Color3.fromRGB(55, 35, 80),
-    BorderMid   = Color3.fromRGB(95, 55, 145),
-
-    -- Tab Bar
-    TabActive   = Color3.fromRGB(255, 255, 255),
     TabBG       = Color3.fromRGB(22, 16, 34),
-
-    -- Decorative Dots (summer vibes)
-    Dot1        = Color3.fromRGB(255, 110, 35),
-    Dot2        = Color3.fromRGB(148, 43, 255),
-    Dot3        = Color3.fromRGB(255, 175, 70),
 }
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [3] HELPER FUNKTIONEN
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [3] HELPERS
 local function tw(obj, props, dur, style, dir)
     TweenService:Create(obj, TweenInfo.new(dur or 0.2, style or Enum.EasingStyle.Quart, dir or Enum.EasingDirection.Out), props):Play()
 end
@@ -89,15 +60,22 @@ local function cr(obj, r)
     local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r or 8); c.Parent = obj; return c
 end
 local function st(obj, col, thick, trans)
-    local s = Instance.new("UIStroke"); s.Color = col or T.Border; s.Thickness = thick or 1; s.Transparency = trans or 0; s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border; s.Parent = obj; return s
+    local s = Instance.new("UIStroke"); s.Color = col or T.Border; s.Thickness = thick or 1
+    s.Transparency = trans or 0; s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border; s.Parent = obj; return s
 end
 local function pad(obj, l, r, top, bot)
-    local p = Instance.new("UIPadding"); p.PaddingLeft = UDim.new(0, l or 0); p.PaddingRight = UDim.new(0, r or l or 0); p.PaddingTop = UDim.new(0, top or l or 0); p.PaddingBottom = UDim.new(0, bot or top or l or 0); p.Parent = obj; return p
+    local p = Instance.new("UIPadding")
+    p.PaddingLeft = UDim.new(0, l or 0); p.PaddingRight = UDim.new(0, r or l or 0)
+    p.PaddingTop = UDim.new(0, top or l or 0); p.PaddingBottom = UDim.new(0, bot or top or l or 0)
+    p.Parent = obj; return p
+end
+local function gradient(obj, c0, c1, rot)
+    local g = Instance.new("UIGradient")
+    g.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, c0), ColorSequenceKeypoint.new(1, c1)})
+    g.Rotation = rot or 0; g.Parent = obj; return g
 end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [4] GUI ERSTELLEN
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [4] DESTROY OLD + CREATE GUI
 pcall(function()
     for _, name in ipairs({"TLMenuV6","TLMenuV5","TLMenuV4"}) do
         local f = CoreGui:FindFirstChild(name); if f then f:Destroy() end
@@ -110,57 +88,69 @@ pcall(function() gui.IgnoreGuiInset = true end)
 local ok = pcall(function() gui.Parent = CoreGui end)
 if not ok then gui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- [5] NOTIFICATIONS
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local notifHolder = Instance.new("Frame")
 notifHolder.Size = UDim2.new(0,260,1,-20); notifHolder.Position = UDim2.new(0,10,0,10)
 notifHolder.BackgroundTransparency = 1; notifHolder.Parent = gui
-
 local notifLayout = Instance.new("UIListLayout")
 notifLayout.Padding = UDim.new(0,6); notifLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-notifLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left; notifLayout.Parent = notifHolder
+notifLayout.Parent = notifHolder
 
 local function notify(title, text, ntype)
     local accent = ntype == "success" and T.Success or ntype == "error" and T.Danger or ntype == "warning" and T.Warning or T.Purple
     local n = Instance.new("Frame")
-    n.Size = UDim2.new(1,0,0,0); n.BackgroundColor3 = Color3.fromRGB(18,14,28)
-    n.BackgroundTransparency = 0.1; n.BorderSizePixel = 0; n.ClipsDescendants = true; n.Parent = notifHolder
-    cr(n,10); st(n, T.Border, 1, 0.2)
-    local strip = Instance.new("Frame")
-    strip.Size = UDim2.new(0,3,1,0); strip.BackgroundColor3 = accent; strip.BorderSizePixel = 0
-    strip.ZIndex = n.ZIndex + 1; strip.Parent = n; cr(strip,2)
-    local tl2 = Instance.new("TextLabel")
-    tl2.Size = UDim2.new(1,-16,0,16); tl2.Position = UDim2.new(0,12,0,8)
+    n.Size = UDim2.new(1,0,0,0); n.BackgroundColor3 = Color3.fromRGB(16,12,24)
+    n.BackgroundTransparency = 0.08; n.BorderSizePixel = 0; n.ClipsDescendants = true; n.Parent = notifHolder
+    cr(n,12); st(n, T.Border, 1, 0.2)
+    local strip = Instance.new("Frame"); strip.Size = UDim2.new(0,3,1,0); strip.BackgroundColor3 = accent
+    strip.BorderSizePixel = 0; strip.ZIndex = n.ZIndex+1; strip.Parent = n; cr(strip,2)
+    local tl2 = Instance.new("TextLabel"); tl2.Size = UDim2.new(1,-16,0,16); tl2.Position = UDim2.new(0,14,0,8)
     tl2.BackgroundTransparency = 1; tl2.Text = title; tl2.TextColor3 = T.TextPure
     tl2.TextSize = 11; tl2.Font = Enum.Font.GothamBold; tl2.TextXAlignment = Enum.TextXAlignment.Left; tl2.Parent = n
-    local tx = Instance.new("TextLabel")
-    tx.Size = UDim2.new(1,-16,0,14); tx.Position = UDim2.new(0,12,0,26)
+    local tx = Instance.new("TextLabel"); tx.Size = UDim2.new(1,-16,0,14); tx.Position = UDim2.new(0,14,0,27)
     tx.BackgroundTransparency = 1; tx.Text = text; tx.TextColor3 = T.TextSec
     tx.TextSize = 10; tx.Font = Enum.Font.Gotham; tx.TextXAlignment = Enum.TextXAlignment.Left
     tx.TextWrapped = true; tx.Parent = n
-    tw(n, {Size = UDim2.new(1,0,0,52)}, 0.28, Enum.EasingStyle.Back)
+    tw(n, {Size = UDim2.new(1,0,0,54)}, 0.28, Enum.EasingStyle.Back)
     task.delay(3.5, function()
         tw(n, {Size = UDim2.new(1,0,0,0), BackgroundTransparency = 1}, 0.18)
         task.wait(0.22); if n and n.Parent then n:Destroy() end
     end)
 end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [6] HAUPTFENSTER
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-local WIN_W, WIN_H = 780, 480
-local mainFrame = Instance.new("Frame")
-mainFrame.Name = "MainWindow"; mainFrame.Size = UDim2.new(0,WIN_W,0,WIN_H)
-mainFrame.Position = UDim2.new(0.5,-WIN_W/2,0.5,-WIN_H/2)
-mainFrame.BackgroundColor3 = T.BG; mainFrame.BackgroundTransparency = 0.05
-mainFrame.BorderSizePixel = 0; mainFrame.ClipsDescendants = true; mainFrame.Parent = gui
-cr(mainFrame,14); st(mainFrame, T.Border, 1.5, 0.1)
+-- [6] MAIN WINDOW  (bottom-right, opens upward)
+local WIN_W, WIN_H = 520, 490
+local SIDEBAR_W    = 74
+local TOPBAR_H     = 46
 
+local mainFrame = Instance.new("Frame")
+mainFrame.Name          = "MainWindow"
+mainFrame.AnchorPoint   = Vector2.new(1, 1)
+mainFrame.Size          = UDim2.new(0, WIN_W, 0, WIN_H)
+mainFrame.Position      = UDim2.new(1, -18, 1, -18)
+mainFrame.BackgroundColor3       = T.BG
+mainFrame.BackgroundTransparency = 0.04
+mainFrame.BorderSizePixel        = 0
+mainFrame.ClipsDescendants       = true
+mainFrame.Parent                 = gui
+cr(mainFrame, 18)
+st(mainFrame, T.Border, 1.5, 0.1)
+
+-- [7] TOP BAR
+local topBar = Instance.new("Frame")
+topBar.Name             = "TopBar"
+topBar.Size             = UDim2.new(1, 0, 0, TOPBAR_H)
+topBar.BackgroundColor3 = Color3.fromRGB(11, 8, 17)
+topBar.BackgroundTransparency = 0.05
+topBar.BorderSizePixel  = 0
+topBar.ZIndex           = mainFrame.ZIndex + 3
+topBar.Parent           = mainFrame
+
+-- Gradient accent line (top)
 local glowEdge = Instance.new("Frame")
 glowEdge.Size = UDim2.new(1,0,0,3); glowEdge.BackgroundColor3 = T.Purple
 glowEdge.BackgroundTransparency = 0; glowEdge.BorderSizePixel = 0
-glowEdge.ZIndex = mainFrame.ZIndex + 5; glowEdge.Parent = mainFrame
+glowEdge.ZIndex = topBar.ZIndex + 2; glowEdge.Parent = topBar
 local glowGrad = Instance.new("UIGradient")
 glowGrad.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0,   Color3.fromRGB(148, 43, 255)),
@@ -169,110 +159,133 @@ glowGrad.Color = ColorSequence.new({
 })
 glowGrad.Parent = glowEdge
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [7] TOP BAR
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-local topBar = Instance.new("Frame")
-topBar.Name = "TopBar"; topBar.Size = UDim2.new(1,0,0,48)
-topBar.BackgroundColor3 = Color3.fromRGB(10,8,16); topBar.BackgroundTransparency = 0.1
-topBar.BorderSizePixel = 0; topBar.ZIndex = mainFrame.ZIndex + 2; topBar.Parent = mainFrame
-
-local topLine = Instance.new("Frame")
-topLine.Size = UDim2.new(1,0,0,1); topLine.Position = UDim2.new(0,0,1,-1)
-topLine.BackgroundColor3 = T.Border; topLine.BackgroundTransparency = 0.3
-topLine.BorderSizePixel = 0; topLine.ZIndex = topBar.ZIndex + 1; topLine.Parent = topBar
-
+-- Title
 local titleLbl = Instance.new("TextLabel")
-titleLbl.Size = UDim2.new(0,160,1,0); titleLbl.Position = UDim2.new(0,16,0,0)
+titleLbl.Size = UDim2.new(0, 120, 1, -4); titleLbl.Position = UDim2.new(0, SIDEBAR_W + 14, 0, 0)
 titleLbl.BackgroundTransparency = 1; titleLbl.Text = "TL Menu"
-titleLbl.TextColor3 = T.TextPure; titleLbl.TextSize = 15; titleLbl.Font = Enum.Font.GothamBlack
-titleLbl.TextXAlignment = Enum.TextXAlignment.Left; titleLbl.ZIndex = topBar.ZIndex + 1; titleLbl.Parent = topBar
+titleLbl.TextColor3 = T.TextPure; titleLbl.TextSize = 14; titleLbl.Font = Enum.Font.GothamBlack
+titleLbl.TextXAlignment = Enum.TextXAlignment.Left; titleLbl.ZIndex = topBar.ZIndex+1; titleLbl.Parent = topBar
 
+-- Sub label
 local subLbl = Instance.new("TextLabel")
-subLbl.Size = UDim2.new(0,160,0,12); subLbl.Position = UDim2.new(0,16,0,28)
-subLbl.BackgroundTransparency = 1; subLbl.Text = "by TL Scripts"
-subLbl.TextColor3 = T.TextMuted; subLbl.TextSize = 9; subLbl.Font = Enum.Font.Gotham
-subLbl.TextXAlignment = Enum.TextXAlignment.Left; subLbl.ZIndex = topBar.ZIndex + 1; subLbl.Parent = topBar
+subLbl.Size = UDim2.new(0, 120, 0, 10); subLbl.Position = UDim2.new(0, SIDEBAR_W + 14, 0, 28)
+subLbl.BackgroundTransparency = 1; subLbl.Text = "Summer Vibes Edition"
+subLbl.TextColor3 = T.TextMuted; subLbl.TextSize = 8; subLbl.Font = Enum.Font.Gotham
+subLbl.TextXAlignment = Enum.TextXAlignment.Left; subLbl.ZIndex = topBar.ZIndex+1; subLbl.Parent = topBar
 
-for i, col in ipairs({T.Dot1, T.Dot2, T.Dot3}) do
-    local dot = Instance.new("Frame")
-    dot.Size = UDim2.new(0,10,0,10); dot.Position = UDim2.new(0,160+(i-1)*16,0.5,-5)
-    dot.BackgroundColor3 = col; dot.BorderSizePixel = 0
-    dot.ZIndex = topBar.ZIndex + 1; dot.Parent = topBar; cr(dot,5)
+-- FPS/Ping
+local fpsPing = Instance.new("TextLabel")
+fpsPing.Size = UDim2.new(0, 120, 1, 0); fpsPing.Position = UDim2.new(0, SIDEBAR_W + 145, 0, 0)
+fpsPing.BackgroundTransparency = 1; fpsPing.Text = "FPS -- | --ms"
+fpsPing.TextColor3 = T.TextMuted; fpsPing.TextSize = 9; fpsPing.Font = Enum.Font.GothamBold
+fpsPing.TextXAlignment = Enum.TextXAlignment.Left; fpsPing.ZIndex = topBar.ZIndex+1; fpsPing.Parent = topBar
+
+local fpsCount, lastTick = 0, tick()
+RunService.RenderStepped:Connect(function()
+    fpsCount += 1; local now = tick()
+    if now - lastTick >= 1 then
+        local fps = math.round(fpsCount / (now - lastTick)); local ping = 0
+        pcall(function() ping = math.round(LocalPlayer:GetNetworkPing() * 1000) end)
+        fpsPing.Text = "FPS "..fps.." | "..ping.."ms"
+        fpsPing.TextColor3 = ping < 80 and T.Success or ping < 150 and T.Warning or T.Danger
+        fpsCount = 0; lastTick = now
+    end
+end)
+
+-- Close button
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 28, 0, 28); closeBtn.Position = UDim2.new(1, -38, 0.5, -14)
+closeBtn.BackgroundColor3 = T.Danger; closeBtn.BackgroundTransparency = 0.15
+closeBtn.Text = "x"; closeBtn.TextColor3 = T.White; closeBtn.TextSize = 13
+closeBtn.Font = Enum.Font.GothamBold; closeBtn.AutoButtonColor = false
+closeBtn.ZIndex = topBar.ZIndex+1; closeBtn.Parent = topBar; cr(closeBtn, 8)
+closeBtn.MouseEnter:Connect(function() tw(closeBtn, {BackgroundTransparency = 0}, 0.1) end)
+closeBtn.MouseLeave:Connect(function() tw(closeBtn, {BackgroundTransparency = 0.15}, 0.1) end)
+closeBtn.MouseButton1Click:Connect(function()
+    tw(mainFrame, {Size = UDim2.new(0, WIN_W, 0, 0)}, 0.2, Enum.EasingStyle.Quart)
+    task.wait(0.22); pcall(function() gui:Destroy() end)
+end)
+
+-- Top bar bottom separator
+local topSep = Instance.new("Frame")
+topSep.Size = UDim2.new(1,0,0,1); topSep.Position = UDim2.new(0,0,1,-1)
+topSep.BackgroundColor3 = T.Border; topSep.BackgroundTransparency = 0.4
+topSep.BorderSizePixel = 0; topSep.ZIndex = topBar.ZIndex+1; topSep.Parent = topBar
+
+-- Dragging via TopBar
+do
+    local dragging, dragStart, startPos = false, nil, nil
+    topBar.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true; dragStart = i.Position; startPos = mainFrame.Position
+        end
+    end)
+    topBar.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+    end)
+    UserInputService.InputChanged:Connect(function(i)
+        if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = i.Position - dragStart
+            mainFrame.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
 end
 
-local rightBtns = {"Unload","Tags: ON","Key: G","âœ•"}
-local rightX = WIN_W - 14
-for i = #rightBtns, 1, -1 do
-    local label = rightBtns[i]; local isX = label == "âœ•"
-    local btnW = isX and 28 or (string.len(label)*7+20); rightX = rightX - btnW
-    local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(0,btnW,0,24); btn.Position = UDim2.new(0,rightX,0.5,-12)
-    btn.BackgroundColor3 = isX and T.Danger or T.TabBG
-    btn.BackgroundTransparency = isX and 0 or 0.2; btn.Text = label
-    btn.TextColor3 = isX and T.White or T.TextSec; btn.TextSize = 10
-    btn.Font = Enum.Font.GothamBold; btn.AutoButtonColor = false
-    btn.ZIndex = topBar.ZIndex + 1; btn.Parent = topBar; cr(btn,6)
-    if not isX then st(btn, T.Border, 1, 0.3) end
-    btn.MouseEnter:Connect(function() tw(btn, {BackgroundTransparency = isX and 0.2 or 0}, 0.1); tw(btn, {TextColor3 = T.TextPure}, 0.1) end)
-    btn.MouseLeave:Connect(function() tw(btn, {BackgroundTransparency = isX and 0 or 0.2}, 0.1); tw(btn, {TextColor3 = isX and T.White or T.TextSec}, 0.1) end)
-    if isX then btn.MouseButton1Click:Connect(function()
-        tw(mainFrame, {Size = UDim2.new(0,WIN_W,0,0), BackgroundTransparency = 1}, 0.22, Enum.EasingStyle.Quart)
-        task.wait(0.25); pcall(function() gui:Destroy() end)
-    end) end
-    rightX = rightX - 6
-end
+-- [8] SIDEBAR (left, below topbar)
+local sidebar = Instance.new("Frame")
+sidebar.Name = "Sidebar"
+sidebar.Size = UDim2.new(0, SIDEBAR_W, 1, -TOPBAR_H)
+sidebar.Position = UDim2.new(0, 0, 0, TOPBAR_H)
+sidebar.BackgroundColor3 = T.Sidebar
+sidebar.BackgroundTransparency = 0.05
+sidebar.BorderSizePixel = 0
+sidebar.ZIndex = mainFrame.ZIndex + 2
+sidebar.Parent = mainFrame
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [8] CONTENT BEREICH
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- Sidebar right border
+local sidebarBorder = Instance.new("Frame")
+sidebarBorder.Size = UDim2.new(0,1,1,0); sidebarBorder.Position = UDim2.new(1,-1,0,0)
+sidebarBorder.BackgroundColor3 = T.Border; sidebarBorder.BackgroundTransparency = 0.35
+sidebarBorder.BorderSizePixel = 0; sidebarBorder.ZIndex = sidebar.ZIndex+1; sidebarBorder.Parent = sidebar
+
+local sidebarLayout = Instance.new("UIListLayout")
+sidebarLayout.Padding = UDim.new(0, 2)
+sidebarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+sidebarLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+sidebarLayout.Parent = sidebar
+pad(sidebar, 0, 0, 10, 10)
+
+-- [9] CONTENT AREA (right of sidebar, below topbar)
 local contentFrame = Instance.new("Frame")
-contentFrame.Name = "Content"; contentFrame.Size = UDim2.new(1,0,1,-96)
-contentFrame.Position = UDim2.new(0,0,0,48); contentFrame.BackgroundTransparency = 1
-contentFrame.ClipsDescendants = true; contentFrame.ZIndex = mainFrame.ZIndex + 1; contentFrame.Parent = mainFrame
+contentFrame.Name = "Content"
+contentFrame.Size = UDim2.new(1, -SIDEBAR_W, 1, -TOPBAR_H)
+contentFrame.Position = UDim2.new(0, SIDEBAR_W, 0, TOPBAR_H)
+contentFrame.BackgroundTransparency = 1
+contentFrame.ClipsDescendants = true
+contentFrame.ZIndex = mainFrame.ZIndex + 1
+contentFrame.Parent = mainFrame
 
 local contentScroll = Instance.new("ScrollingFrame")
 contentScroll.Size = UDim2.new(1,0,1,0); contentScroll.BackgroundTransparency = 1
 contentScroll.BorderSizePixel = 0; contentScroll.ScrollBarThickness = 3
 contentScroll.ScrollBarImageColor3 = T.Purple; contentScroll.CanvasSize = UDim2.new(0,0,0,0)
-contentScroll.Parent = contentFrame; pad(contentScroll, 16, 16, 16, 16)
+contentScroll.Parent = contentFrame
+pad(contentScroll, 14, 14, 14, 14)
 
 local contentList = Instance.new("UIListLayout")
 contentList.Padding = UDim.new(0,10); contentList.Parent = contentScroll
 contentList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    contentScroll.CanvasSize = UDim2.new(0,0,0,contentList.AbsoluteContentSize.Y + 32)
+    contentScroll.CanvasSize = UDim2.new(0,0,0, contentList.AbsoluteContentSize.Y + 28)
 end)
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [9] TAB BAR
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-local tabBar = Instance.new("Frame")
-tabBar.Name = "TabBar"; tabBar.Size = UDim2.new(1,0,0,48); tabBar.Position = UDim2.new(0,0,1,-48)
-tabBar.BackgroundColor3 = Color3.fromRGB(10,8,16); tabBar.BackgroundTransparency = 0.1
-tabBar.BorderSizePixel = 0; tabBar.ZIndex = mainFrame.ZIndex + 3; tabBar.Parent = mainFrame
-
-local tabTopLine = Instance.new("Frame")
-tabTopLine.Size = UDim2.new(1,0,0,1); tabTopLine.BackgroundColor3 = T.Border
-tabTopLine.BackgroundTransparency = 0.3; tabTopLine.BorderSizePixel = 0
-tabTopLine.ZIndex = tabBar.ZIndex + 1; tabTopLine.Parent = tabBar
-
-local tabInner = Instance.new("Frame")
-tabInner.Size = UDim2.new(1,-24,1,-10); tabInner.Position = UDim2.new(0,12,0,5)
-tabInner.BackgroundTransparency = 1; tabInner.ZIndex = tabBar.ZIndex + 1; tabInner.Parent = tabBar
-
-local tabLayout = Instance.new("UIListLayout")
-tabLayout.FillDirection = Enum.FillDirection.Horizontal
-tabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-tabLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-tabLayout.Padding = UDim.new(0,6); tabLayout.Parent = tabInner
-
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [10] UI KOMPONENTEN (Builders)
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [10] UI BUILDERS
 local function makeSection(parent, text)
-    local f = Instance.new("Frame"); f.Size = UDim2.new(1,0,0,24); f.BackgroundTransparency = 1; f.Parent = parent
+    local f = Instance.new("Frame"); f.Size = UDim2.new(1,0,0,22); f.BackgroundTransparency = 1; f.Parent = parent
     local tick_ = Instance.new("Frame"); tick_.Size = UDim2.new(0,3,0,10); tick_.Position = UDim2.new(0,0,0.5,-5)
-    tick_.BackgroundColor3 = T.Purple; tick_.BorderSizePixel = 0; tick_.Parent = f; cr(tick_,2)
+    tick_.BackgroundColor3 = T.Orange; tick_.BorderSizePixel = 0; tick_.Parent = f; cr(tick_,2)
     local l = Instance.new("TextLabel"); l.Size = UDim2.new(1,-12,1,0); l.Position = UDim2.new(0,10,0,0)
     l.BackgroundTransparency = 1; l.Text = text; l.TextColor3 = T.TextMuted; l.TextSize = 9
     l.Font = Enum.Font.GothamBold; l.TextXAlignment = Enum.TextXAlignment.Left; l.Parent = f
@@ -292,11 +305,11 @@ local function makeToggle(parent, label, default, callback)
     lbl.TextXAlignment = Enum.TextXAlignment.Left; lbl.Parent = row
     local track = Instance.new("TextButton"); track.Size = UDim2.new(0,38,0,20); track.Position = UDim2.new(1,-52,0.5,-10)
     track.BackgroundColor3 = default and T.Purple or Color3.fromRGB(40,32,60); track.Text = ""
-    track.AutoButtonColor = false; track.ZIndex = row.ZIndex + 1; track.Parent = row
+    track.AutoButtonColor = false; track.ZIndex = row.ZIndex+1; track.Parent = row
     cr(track,10); st(track, default and T.PurpleLight or T.Border, 1, 0.2)
     local knob = Instance.new("Frame"); knob.Size = UDim2.new(0,14,0,14)
     knob.Position = default and UDim2.new(1,-17,0.5,-7) or UDim2.new(0,3,0.5,-7)
-    knob.BackgroundColor3 = T.White; knob.BorderSizePixel = 0; knob.ZIndex = track.ZIndex + 1
+    knob.BackgroundColor3 = T.White; knob.BorderSizePixel = 0; knob.ZIndex = track.ZIndex+1
     knob.Parent = track; cr(knob,7)
     local state = default or false
     track.MouseButton1Click:Connect(function()
@@ -325,18 +338,19 @@ local function makeSlider(parent, label, min, max, default, callback)
     valBg.BackgroundColor3 = Color3.fromRGB(40,30,60); valBg.BorderSizePixel = 0; valBg.Parent = topRow
     cr(valBg,5); st(valBg, T.Border, 1, 0.3)
     local val = Instance.new("TextLabel"); val.Size = UDim2.new(1,0,1,0); val.BackgroundTransparency = 1
-    val.Text = tostring(default); val.TextColor3 = T.PurpleLight; val.TextSize = 10; val.Font = Enum.Font.GothamBold; val.Parent = valBg
+    val.Text = tostring(default); val.TextColor3 = T.OrangeLight; val.TextSize = 10; val.Font = Enum.Font.GothamBold; val.Parent = valBg
     local sTrack = Instance.new("Frame"); sTrack.Size = UDim2.new(1,0,0,4); sTrack.Position = UDim2.new(0,0,0,38)
     sTrack.BackgroundColor3 = Color3.fromRGB(40,30,60); sTrack.BorderSizePixel = 0; sTrack.Parent = row; cr(sTrack,2)
     local fill = Instance.new("Frame"); fill.Size = UDim2.new((default-min)/(max-min),0,1,0)
     fill.BackgroundColor3 = T.Purple; fill.BorderSizePixel = 0; fill.Parent = sTrack; cr(fill,2)
+    gradient(fill, T.Purple, T.Orange, 0)
     local thumb = Instance.new("TextButton"); thumb.Size = UDim2.new(0,12,0,12)
-    thumb.Position = UDim2.new((default-min)/(max-min),-6,0.5,-6); thumb.BackgroundColor3 = T.PurpleLight
-    thumb.Text = ""; thumb.AutoButtonColor = false; thumb.ZIndex = sTrack.ZIndex + 1; thumb.Parent = sTrack; cr(thumb,6)
+    thumb.Position = UDim2.new((default-min)/(max-min),-6,0.5,-6); thumb.BackgroundColor3 = T.OrangeLight
+    thumb.Text = ""; thumb.AutoButtonColor = false; thumb.ZIndex = sTrack.ZIndex+1; thumb.Parent = sTrack; cr(thumb,6)
     local dragging = false
     local function upd(input)
-        local rel = math.clamp((input.Position.X - sTrack.AbsolutePosition.X) / sTrack.AbsoluteSize.X, 0, 1)
-        local v = math.floor(min + (max-min) * rel)
+        local rel = math.clamp((input.Position.X - sTrack.AbsolutePosition.X)/sTrack.AbsoluteSize.X, 0, 1)
+        local v = math.floor(min + (max-min)*rel)
         fill.Size = UDim2.new(rel,0,1,0); thumb.Position = UDim2.new(rel,-6,0.5,-6)
         val.Text = tostring(v); pcall(callback, v)
     end
@@ -349,24 +363,26 @@ end
 
 local function makeButton(parent, text, callback, isPrimary)
     local btn = Instance.new("TextButton"); btn.Size = UDim2.new(1,0,0,38)
-    btn.BackgroundColor3 = isPrimary and T.Purple or Color3.fromRGB(30,22,50)
+    btn.BackgroundColor3 = isPrimary and T.Purple or Color3.fromRGB(28,20,44)
     btn.BackgroundTransparency = isPrimary and 0 or 0.2; btn.Text = text
     btn.TextColor3 = T.TextPure; btn.TextSize = 11; btn.Font = Enum.Font.GothamBold
     btn.AutoButtonColor = false; btn.Parent = parent; cr(btn,10)
+    if isPrimary then gradient(btn, T.Purple, T.Orange, 90) end
     if not isPrimary then st(btn, T.Border, 1, 0.2) end
-    btn.MouseEnter:Connect(function() tw(btn, {BackgroundColor3 = isPrimary and T.PurpleLight or Color3.fromRGB(45,32,70), BackgroundTransparency = 0}, 0.1) end)
-    btn.MouseLeave:Connect(function() tw(btn, {BackgroundColor3 = isPrimary and T.Purple or Color3.fromRGB(30,22,50), BackgroundTransparency = isPrimary and 0 or 0.2}, 0.1) end)
+    btn.MouseEnter:Connect(function()
+        tw(btn, {BackgroundTransparency = 0}, 0.1)
+    end)
+    btn.MouseLeave:Connect(function()
+        tw(btn, {BackgroundTransparency = isPrimary and 0 or 0.2}, 0.1)
+    end)
     btn.MouseButton1Click:Connect(function()
         tw(btn, {Size = UDim2.new(0.97,0,0,36)}, 0.07); task.wait(0.07)
         tw(btn, {Size = UDim2.new(1,0,0,38)}, 0.14, Enum.EasingStyle.Back); pcall(callback)
     end)
     return btn
 end
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [11] TAB PAGES
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [11] PAGES
 local pages = {}
-local activeTab = nil
 
 local function clearContent()
     for _, c in pairs(contentScroll:GetChildren()) do
@@ -375,82 +391,91 @@ local function clearContent()
     contentScroll.CanvasPosition = Vector2.new(0, 0)
 end
 
--- â”€â”€ HOME â”€â”€
+-- HOME
 pages["Home"] = function()
-    local row1 = Instance.new("Frame"); row1.Size = UDim2.new(1,0,0,130); row1.BackgroundTransparency = 1; row1.Parent = contentScroll
+    local row1 = Instance.new("Frame"); row1.Size = UDim2.new(1,0,0,110); row1.BackgroundTransparency = 1; row1.Parent = contentScroll
     local rowLayout = Instance.new("UIListLayout"); rowLayout.FillDirection = Enum.FillDirection.Horizontal; rowLayout.Padding = UDim.new(0,10); rowLayout.Parent = row1
 
-    local welcome = Instance.new("Frame"); welcome.Size = UDim2.new(0,420,1,0)
-    welcome.BackgroundColor3 = T.Card; welcome.BackgroundTransparency = 0.15; welcome.BorderSizePixel = 0
-    welcome.Parent = row1; cr(welcome,10); st(welcome, T.Border, 1.5, 0.15); pad(welcome, 18, 18, 16, 16)
+    -- Welcome card
+    local welcome = Instance.new("Frame"); welcome.Size = UDim2.new(0.62,0,1,0)
+    welcome.BackgroundColor3 = T.Card; welcome.BackgroundTransparency = 0.15; welcome.BorderSizePixel = 0; welcome.Parent = row1
+    cr(welcome,10); st(welcome, T.Border, 1.5, 0.15); pad(welcome, 14, 14, 12, 12)
+    local topStrip = Instance.new("Frame"); topStrip.Size = UDim2.new(1,0,0,3)
+    topStrip.BackgroundColor3 = T.Purple; topStrip.BackgroundTransparency = 0; topStrip.BorderSizePixel = 0
+    topStrip.ZIndex = welcome.ZIndex+1; topStrip.Parent = welcome
+    gradient(topStrip, T.Purple, T.Orange, 0)
 
-    local topStrip = Instance.new("Frame"); topStrip.Size = UDim2.new(1,0,0,2)
-    topStrip.BackgroundColor3 = T.Purple; topStrip.BackgroundTransparency = 0.2
-    topStrip.BorderSizePixel = 0; topStrip.ZIndex = welcome.ZIndex + 1; topStrip.Parent = welcome
-
-    local wTitle = Instance.new("TextLabel"); wTitle.Size = UDim2.new(1,0,0,24); wTitle.Position = UDim2.new(0,0,0,10)
-    wTitle.BackgroundTransparency = 1; wTitle.Text = "Welcome, "..LocalPlayer.Name.."!"
-    wTitle.TextColor3 = T.TextPure; wTitle.TextSize = 18; wTitle.Font = Enum.Font.GothamBlack
+    local wTitle = Instance.new("TextLabel"); wTitle.Size = UDim2.new(1,0,0,22); wTitle.Position = UDim2.new(0,0,0,8)
+    wTitle.BackgroundTransparency = 1; wTitle.Text = "Hey, "..LocalPlayer.Name.."!"
+    wTitle.TextColor3 = T.TextPure; wTitle.TextSize = 16; wTitle.Font = Enum.Font.GothamBlack
     wTitle.TextXAlignment = Enum.TextXAlignment.Left; wTitle.Parent = welcome
 
-    local wSub = Instance.new("TextLabel"); wSub.Size = UDim2.new(1,0,0,14); wSub.Position = UDim2.new(0,0,0,40)
-    wSub.BackgroundTransparency = 1; wSub.Text = "TL Menu v6 is loaded and ready."
-    wSub.TextColor3 = T.TextSec; wSub.TextSize = 11; wSub.Font = Enum.Font.Gotham
+    local wSub = Instance.new("TextLabel"); wSub.Size = UDim2.new(1,0,0,12); wSub.Position = UDim2.new(0,0,0,34)
+    wSub.BackgroundTransparency = 1; wSub.Text = "TL Menu v6  |  Summer Vibes Edition"
+    wSub.TextColor3 = T.TextSec; wSub.TextSize = 10; wSub.Font = Enum.Font.Gotham
     wSub.TextXAlignment = Enum.TextXAlignment.Left; wSub.Parent = welcome
 
-    local badge = Instance.new("Frame"); badge.Size = UDim2.new(0,160,0,22); badge.Position = UDim2.new(0,0,0,64)
-    badge.BackgroundColor3 = Color3.fromRGB(30,22,50); badge.BackgroundTransparency = 0.1
+    local badge = Instance.new("Frame"); badge.Size = UDim2.new(0,140,0,20); badge.Position = UDim2.new(0,0,0,60)
+    badge.BackgroundColor3 = Color3.fromRGB(28,18,45); badge.BackgroundTransparency = 0.1
     badge.BorderSizePixel = 0; badge.Parent = welcome; cr(badge,6); st(badge, T.Purple, 1, 0.4)
     local bdot = Instance.new("Frame"); bdot.Size = UDim2.new(0,6,0,6); bdot.Position = UDim2.new(0,8,0.5,-3)
-    bdot.BackgroundColor3 = T.Purple; bdot.BorderSizePixel = 0; bdot.ZIndex = badge.ZIndex+1; bdot.Parent = badge; cr(bdot,3)
+    bdot.BackgroundColor3 = T.Orange; bdot.BorderSizePixel = 0; bdot.ZIndex = badge.ZIndex+1; bdot.Parent = badge; cr(bdot,3)
     local badgeTxt = Instance.new("TextLabel"); badgeTxt.Size = UDim2.new(1,-20,1,0); badgeTxt.Position = UDim2.new(0,18,0,0)
-    badgeTxt.BackgroundTransparency = 1; badgeTxt.Text = "Access Granted"; badgeTxt.TextColor3 = T.PurpleLight
-    badgeTxt.TextSize = 10; badgeTxt.Font = Enum.Font.GothamBold; badgeTxt.TextXAlignment = Enum.TextXAlignment.Left; badgeTxt.Parent = badge
+    badgeTxt.BackgroundTransparency = 1; badgeTxt.Text = "Access Granted"
+    badgeTxt.TextColor3 = T.OrangeLight; badgeTxt.TextSize = 9; badgeTxt.Font = Enum.Font.GothamBold
+    badgeTxt.TextXAlignment = Enum.TextXAlignment.Left; badgeTxt.Parent = badge
 
-    local statsCol = Instance.new("Frame"); statsCol.Size = UDim2.new(1,-430,1,0); statsCol.BackgroundTransparency = 1; statsCol.Parent = row1
-    local statsLayout = Instance.new("UIListLayout"); statsLayout.Padding = UDim.new(0,6); statsLayout.Parent = statsCol
+    -- Stats column
+    local statsCol = Instance.new("Frame"); statsCol.Size = UDim2.new(0.38,-10,1,0)
+    statsCol.BackgroundTransparency = 1; statsCol.Parent = row1
+    local statsLayout = Instance.new("UIListLayout"); statsLayout.Padding = UDim.new(0,5); statsLayout.Parent = statsCol
+
     local function miniCard(label, value, vColor)
-        local mc = Instance.new("Frame"); mc.Size = UDim2.new(1,0,0,34); mc.BackgroundColor3 = T.Card
-        mc.BackgroundTransparency = 0.2; mc.BorderSizePixel = 0; mc.Parent = statsCol; cr(mc,8); st(mc, T.Border, 1, 0.35); pad(mc, 12, 12, 0, 0)
-        local l = Instance.new("TextLabel"); l.Size = UDim2.new(0.45,0,1,0); l.BackgroundTransparency = 1
-        l.Text = label; l.TextColor3 = T.TextMuted; l.TextSize = 9; l.Font = Enum.Font.GothamBold; l.TextXAlignment = Enum.TextXAlignment.Left; l.Parent = mc
-        local v = Instance.new("TextLabel"); v.Size = UDim2.new(0.55,0,1,0); v.Position = UDim2.new(0.45,0,0,0)
-        v.BackgroundTransparency = 1; v.Text = value; v.TextColor3 = vColor or T.TextPure; v.TextSize = 11
+        local mc = Instance.new("Frame"); mc.Size = UDim2.new(1,0,0,30); mc.BackgroundColor3 = T.Card
+        mc.BackgroundTransparency = 0.2; mc.BorderSizePixel = 0; mc.Parent = statsCol; cr(mc,8)
+        st(mc, T.Border, 1, 0.35); pad(mc, 10, 10, 0, 0)
+        local l = Instance.new("TextLabel"); l.Size = UDim2.new(0.5,0,1,0); l.BackgroundTransparency = 1
+        l.Text = label; l.TextColor3 = T.TextMuted; l.TextSize = 9; l.Font = Enum.Font.GothamBold
+        l.TextXAlignment = Enum.TextXAlignment.Left; l.Parent = mc
+        local v = Instance.new("TextLabel"); v.Size = UDim2.new(0.5,0,1,0); v.Position = UDim2.new(0.5,0,0,0)
+        v.BackgroundTransparency = 1; v.Text = value; v.TextColor3 = vColor or T.TextPure; v.TextSize = 10
         v.Font = Enum.Font.GothamBold; v.TextXAlignment = Enum.TextXAlignment.Left; v.Parent = mc
     end
-    miniCard("Version", "v6.0", T.TextPure); miniCard("Status", "Loaded", T.Success); miniCard("Game", tostring(game.PlaceId), T.PurpleLight)
+    miniCard("Version", "v6.0", T.TextPure)
+    miniCard("Status",  "Loaded", T.Success)
+    miniCard("Game", tostring(game.PlaceId), T.OrangeLight)
 
     makeSection(contentScroll, "CHANGELOG")
     local changes = {
-        {ver="v6.0", title="AudioCrafter Style Redesign", desc="Full UI restyle. Purple theme, bottom tabs, card layout."},
-        {ver="v5.0", title="Black & White Edition", desc="Monochrome redesign with sidebar navigation and glass cards."},
-        {ver="v4.0", title="Original Release", desc="Initial TL Menu with core features and toggles."},
+        {ver="v6.0", title="Summer Vibes Redesign", desc="Sidebar layout, purple-orange gradient, bottom-right popup."},
+        {ver="v5.0", title="Black & White Edition", desc="Monochrome redesign with sidebar navigation."},
+        {ver="v4.0", title="Original Release",      desc="Initial TL Menu with core features and toggles."},
     }
     for _, ch in ipairs(changes) do
-        local card = makeCard(contentScroll, 72); pad(card, 14, 14, 12, 12)
-        local verBadge = Instance.new("Frame"); verBadge.Size = UDim2.new(0,36,0,18)
-        verBadge.BackgroundColor3 = Color3.fromRGB(40,28,65); verBadge.BorderSizePixel = 0; verBadge.Parent = card
+        local card = makeCard(contentScroll, 68); pad(card, 12, 12, 10, 10)
+        local verBadge = Instance.new("Frame"); verBadge.Size = UDim2.new(0,34,0,17)
+        verBadge.BackgroundColor3 = Color3.fromRGB(35,22,58); verBadge.BorderSizePixel = 0; verBadge.Parent = card
         cr(verBadge,5); st(verBadge, T.Purple, 1, 0.4)
         local verTxt = Instance.new("TextLabel"); verTxt.Size = UDim2.new(1,0,1,0); verTxt.BackgroundTransparency = 1
-        verTxt.Text = ch.ver; verTxt.TextColor3 = T.PurpleLight; verTxt.TextSize = 9; verTxt.Font = Enum.Font.GothamBold; verTxt.Parent = verBadge
-        local title = Instance.new("TextLabel"); title.Size = UDim2.new(1,-50,0,16); title.Position = UDim2.new(0,44,0,0)
-        title.BackgroundTransparency = 1; title.Text = ch.title; title.TextColor3 = T.TextPure; title.TextSize = 12
-        title.Font = Enum.Font.GothamBold; title.TextXAlignment = Enum.TextXAlignment.Left; title.Parent = card
-        local desc = Instance.new("TextLabel"); desc.Size = UDim2.new(1,0,0,26); desc.Position = UDim2.new(0,0,0,28)
-        desc.BackgroundTransparency = 1; desc.Text = ch.desc; desc.TextColor3 = T.TextSec; desc.TextSize = 10
+        verTxt.Text = ch.ver; verTxt.TextColor3 = T.OrangeLight; verTxt.TextSize = 9; verTxt.Font = Enum.Font.GothamBold; verTxt.Parent = verBadge
+        local title_ = Instance.new("TextLabel"); title_.Size = UDim2.new(1,-46,0,15); title_.Position = UDim2.new(0,42,0,0)
+        title_.BackgroundTransparency = 1; title_.Text = ch.title; title_.TextColor3 = T.TextPure; title_.TextSize = 11
+        title_.Font = Enum.Font.GothamBold; title_.TextXAlignment = Enum.TextXAlignment.Left; title_.Parent = card
+        local desc = Instance.new("TextLabel"); desc.Size = UDim2.new(1,0,0,24); desc.Position = UDim2.new(0,0,0,24)
+        desc.BackgroundTransparency = 1; desc.Text = ch.desc; desc.TextColor3 = T.TextSec; desc.TextSize = 9
         desc.Font = Enum.Font.Gotham; desc.TextXAlignment = Enum.TextXAlignment.Left; desc.TextWrapped = true; desc.Parent = card
     end
 end
 
--- â”€â”€ PLAYER (BUG GEFIXT: alles in einer Funktion) â”€â”€
+-- PLAYER (bug fixed: all in one function)
 local invisRunning = false
 local function makeInvisible()
     local char = Character; if not char then return end
     for _, part in pairs(char:GetDescendants()) do
         if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then part.Transparency = 1 end
     end
-    local connection; connection = RunService.Heartbeat:Connect(function()
-        if not invisRunning then connection:Disconnect(); return end
+    local conn; conn = RunService.Heartbeat:Connect(function()
+        if not invisRunning then conn:Disconnect(); return end
         for _, v in pairs(char:GetChildren()) do
             if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then
                 v.Velocity = Vector3.new(0,0,0); v.CFrame = CFrame.new(9e9,9e9,9e9)
@@ -462,15 +487,17 @@ end
 pages["Player"] = function()
     makeSection(contentScroll, "AUSSEHEN")
     makeToggle(contentScroll, "Invisible FE", false, function(s)
-        if s then invisRunning = true; makeInvisible(); notify("Invisible", "Andere Spieler sehen dich jetzt nicht mehr!", "success")
-        else invisRunning = false; notify("Invisible", "Reset nÃ¶tig, um wieder sichtbar zu sein!", "warning") end
+        if s then invisRunning = true; makeInvisible(); notify("Invisible", "Andere sehen dich nicht mehr!", "success")
+        else invisRunning = false; notify("Invisible", "Reset zum Sichtbarwerden noetig!", "warning") end
     end)
-
     makeSection(contentScroll, "STATS")
-    makeSlider(contentScroll, "Walk Speed", 16, 500, 16, function(v) pcall(function() if Humanoid then Humanoid.WalkSpeed = v end end) end)
-    makeSlider(contentScroll, "Jump Power", 50, 500, 50, function(v) pcall(function() if Humanoid then Humanoid.JumpPower = v end end) end)
-
-    makeSection(contentScroll, "ÃœBERLEBEN")
+    makeSlider(contentScroll, "Walk Speed", 16, 500, 16, function(v)
+        pcall(function() if Humanoid then Humanoid.WalkSpeed = v end end)
+    end)
+    makeSlider(contentScroll, "Jump Power", 50, 500, 50, function(v)
+        pcall(function() if Humanoid then Humanoid.JumpPower = v end end)
+    end)
+    makeSection(contentScroll, "UEBERLEBEN")
     local godConn = nil
     makeToggle(contentScroll, "God Mode", false, function(s)
         pcall(function()
@@ -478,14 +505,16 @@ pages["Player"] = function()
             if not Humanoid then return end
             if s then
                 Humanoid.MaxHealth = math.huge; Humanoid.Health = math.huge
-                godConn = Humanoid:GetPropertyChangedSignal("Health"):Connect(function() if Humanoid then Humanoid.Health = math.huge end end)
+                godConn = Humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+                    if Humanoid then Humanoid.Health = math.huge end
+                end)
             else Humanoid.MaxHealth = 100; Humanoid.Health = 100 end
         end)
         notify("God Mode", s and "Unverwundbar!" or "Normal!", "success")
     end)
 end
 
--- â”€â”€ WORLD â”€â”€
+-- WORLD
 pages["World"] = function()
     makeSection(contentScroll, "FLIEGEN")
     local flyEnabled, flyConn, flyBody, flySpd = false, nil, nil, 80
@@ -503,7 +532,7 @@ pages["World"] = function()
                     if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir -= cam.CFrame.LookVector end
                     if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir -= cam.CFrame.RightVector end
                     if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir += cam.CFrame.RightVector end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then dir += Vector3.new(0,1,0) end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.Space)     then dir += Vector3.new(0,1,0) end
                     if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then dir -= Vector3.new(0,1,0) end
                     flyBody.Velocity = dir.Magnitude > 0 and dir.Unit * flySpd or Vector3.zero
                 end)
@@ -516,7 +545,6 @@ pages["World"] = function()
         end)
     end)
     makeSlider(contentScroll, "Fly Speed", 10, 300, 80, function(v) flySpd = v end)
-
     makeSection(contentScroll, "BEWEGUNG")
     local ncConn = nil
     makeToggle(contentScroll, "No Clip", false, function(s)
@@ -526,32 +554,37 @@ pages["World"] = function()
                     if not Character then return end
                     for _, p in pairs(Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide = false end end
                 end)
-                notify("No Clip", "Durch WÃ¤nde!", "success")
+                notify("No Clip", "Durch Waende!", "success")
             else
                 if ncConn then ncConn:Disconnect(); ncConn = nil end
-                pcall(function() if Character then for _, p in pairs(Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide = true end end end end)
+                pcall(function()
+                    if Character then for _, p in pairs(Character:GetDescendants()) do
+                        if p:IsA("BasePart") then p.CanCollide = true end
+                    end end
+                end)
                 notify("No Clip", "Deaktiviert!", "warning")
             end
         end)
     end)
     makeToggle(contentScroll, "Infinite Jump", false, function(s)
-        if s then UserInputService.JumpRequest:Connect(function() if Humanoid then Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end end) end
+        if s then UserInputService.JumpRequest:Connect(function()
+            if Humanoid then Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end
+        end) end
         notify("Infinite Jump", s and "Aktiviert!" or "Deaktiviert!", "success")
     end)
 end
 
--- â”€â”€ TOOLS â”€â”€
+-- TOOLS
 pages["Tools"] = function()
     makeSection(contentScroll, "AKTIONEN")
-    makeButton(contentScroll, "â†º  Rejoin Server", function()
+    makeButton(contentScroll, "Rejoin Server", function()
         notify("Rejoin", "Verbinde neu...", "success"); task.wait(0.8)
         pcall(function() TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer) end)
     end, true)
-    makeButton(contentScroll, "âœ¦  Respawn", function()
+    makeButton(contentScroll, "Respawn", function()
         pcall(function() if Character then Character:BreakJoints() end end)
         notify("Respawn", "Du wirst respawnt!", "success")
     end)
-
     makeSection(contentScroll, "VISUAL")
     local espConns = {}
     makeToggle(contentScroll, "Player ESP", false, function(s)
@@ -560,15 +593,19 @@ pages["Tools"] = function()
             for _, p in pairs(Players:GetPlayers()) do
                 if p ~= LocalPlayer and p.Character then
                     if s then
-                        local hl = Instance.new("Highlight"); hl.Name = "TLESP"; hl.FillColor = Color3.fromRGB(80,0,140)
-                        hl.OutlineColor = T.PurpleLight; hl.FillTransparency = 0.7; hl.Parent = p.Character
-                    else for _, v in pairs(p.Character:GetChildren()) do if v.Name == "TLESP" then v:Destroy() end end end
+                        local hl = Instance.new("Highlight"); hl.Name = "TLESP"
+                        hl.FillColor = Color3.fromRGB(80,0,140); hl.OutlineColor = T.OrangeLight
+                        hl.FillTransparency = 0.7; hl.Parent = p.Character
+                    else
+                        for _, v in pairs(p.Character:GetChildren()) do if v.Name == "TLESP" then v:Destroy() end end
+                    end
                 end
             end
             if s then table.insert(espConns, Players.PlayerAdded:Connect(function(p)
                 p.CharacterAdded:Connect(function(c)
-                    local hl = Instance.new("Highlight"); hl.Name = "TLESP"; hl.FillColor = Color3.fromRGB(80,0,140)
-                    hl.OutlineColor = T.PurpleLight; hl.FillTransparency = 0.7; hl.Parent = c
+                    local hl = Instance.new("Highlight"); hl.Name = "TLESP"
+                    hl.FillColor = Color3.fromRGB(80,0,140); hl.OutlineColor = T.OrangeLight
+                    hl.FillTransparency = 0.7; hl.Parent = c
                 end)
             end)) end
         end)
@@ -582,167 +619,161 @@ pages["Tools"] = function()
         notify("Full Bright", s and "Alles beleuchtet!" or "Normal!", "success")
     end)
     makeToggle(contentScroll, "Anti-AFK", false, function(s)
-        if s then pcall(function() local VU = game:GetService("VirtualUser")
-            LocalPlayer.Idled:Connect(function() VU:CaptureController(); VU:ClickButton2(Vector2.new()) end) end)
-            notify("Anti-AFK", "Kein Kick mehr!", "success")
+        if s then pcall(function()
+            local VU = game:GetService("VirtualUser")
+            LocalPlayer.Idled:Connect(function() VU:CaptureController(); VU:ClickButton2(Vector2.new()) end)
+        end); notify("Anti-AFK", "Kein Kick mehr!", "success")
         else notify("Anti-AFK", "Deaktiviert!", "warning") end
     end)
 end
 
--- â”€â”€ PLAYERS â”€â”€
+-- PLAYERS
 pages["Players"] = function()
     makeSection(contentScroll, "ONLINE  ("..#Players:GetPlayers()..")")
     for _, p in pairs(Players:GetPlayers()) do
-        local isMe = p == LocalPlayer; local row = makeCard(contentScroll, 52); pad(row, 12, 12, 0, 0)
+        local isMe = p == LocalPlayer; local row = makeCard(contentScroll, 50); pad(row, 10, 10, 0, 0)
         if isMe then
-            local youBar = Instance.new("Frame"); youBar.Size = UDim2.new(0,3,0,28); youBar.Position = UDim2.new(0,0,0.5,-14)
-            youBar.BackgroundColor3 = T.Purple; youBar.BackgroundTransparency = 0.2; youBar.BorderSizePixel = 0
+            local youBar = Instance.new("Frame"); youBar.Size = UDim2.new(0,3,0,26); youBar.Position = UDim2.new(0,0,0.5,-13)
+            youBar.BackgroundColor3 = T.Orange; youBar.BackgroundTransparency = 0.2; youBar.BorderSizePixel = 0
             youBar.ZIndex = row.ZIndex+1; youBar.Parent = row; cr(youBar,2)
         end
-        local av = Instance.new("ImageLabel"); av.Size = UDim2.new(0,30,0,30); av.Position = UDim2.new(0,6,0.5,-15)
-        av.BackgroundColor3 = Color3.fromRGB(30,22,50); av.BorderSizePixel = 0
+        local av = Instance.new("ImageLabel"); av.Size = UDim2.new(0,28,0,28); av.Position = UDim2.new(0,6,0.5,-14)
+        av.BackgroundColor3 = Color3.fromRGB(28,20,44); av.BorderSizePixel = 0
         pcall(function() av.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..p.UserId.."&width=48&height=48&format=png" end)
-        av.ZIndex = row.ZIndex+1; av.Parent = row; cr(av,6); st(av, isMe and T.Purple or T.Border, 1, 0.3)
-        local nl = Instance.new("TextLabel"); nl.Size = UDim2.new(1,-52,0,16); nl.Position = UDim2.new(0,44,0.5,-16)
-        nl.BackgroundTransparency = 1; nl.Text = p.Name; nl.TextColor3 = isMe and T.PurpleLight or T.TextMain
+        av.ZIndex = row.ZIndex+1; av.Parent = row; cr(av,6)
+        st(av, isMe and T.Orange or T.Border, 1, 0.3)
+        local nl = Instance.new("TextLabel"); nl.Size = UDim2.new(1,-46,0,14); nl.Position = UDim2.new(0,40,0.5,-14)
+        nl.BackgroundTransparency = 1; nl.Text = p.Name; nl.TextColor3 = isMe and T.OrangeLight or T.TextMain
         nl.TextSize = 11; nl.Font = Enum.Font.GothamBold; nl.TextXAlignment = Enum.TextXAlignment.Left
         nl.ZIndex = row.ZIndex+1; nl.Parent = row
-        local idl = Instance.new("TextLabel"); idl.Size = UDim2.new(1,-52,0,12); idl.Position = UDim2.new(0,44,0.5,2)
-        idl.BackgroundTransparency = 1; idl.Text = "ID "..p.UserId..(isMe and "  Â· you" or "")
+        local idl = Instance.new("TextLabel"); idl.Size = UDim2.new(1,-46,0,11); idl.Position = UDim2.new(0,40,0.5,2)
+        idl.BackgroundTransparency = 1; idl.Text = "ID "..p.UserId..(isMe and " | you" or "")
         idl.TextColor3 = T.TextMuted; idl.TextSize = 9; idl.Font = Enum.Font.Gotham
         idl.TextXAlignment = Enum.TextXAlignment.Left; idl.ZIndex = row.ZIndex+1; idl.Parent = row
     end
 end
 
--- â”€â”€ SETTINGS â”€â”€
+-- SETTINGS
 pages["Settings"] = function()
-    makeSection(contentScroll, "ÃœBER")
-    local about = makeCard(contentScroll, 70); pad(about, 16, 16, 14, 14)
+    makeSection(contentScroll, "UEBER")
+    local about = makeCard(contentScroll, 70); pad(about, 14, 14, 12, 12)
     local aStrip = Instance.new("Frame"); aStrip.Size = UDim2.new(0,3,0,40); aStrip.Position = UDim2.new(0,0,0.5,-20)
-    aStrip.BackgroundColor3 = T.Purple; aStrip.BackgroundTransparency = 0.2; aStrip.BorderSizePixel = 0
+    aStrip.BackgroundColor3 = T.Orange; aStrip.BackgroundTransparency = 0.2; aStrip.BorderSizePixel = 0
     aStrip.ZIndex = about.ZIndex+1; aStrip.Parent = about; cr(aStrip,2)
-    local at = Instance.new("TextLabel"); at.Size = UDim2.new(1,0,0,22); at.BackgroundTransparency = 1
-    at.Text = "TL MENU  v6.0"; at.TextColor3 = T.TextPure; at.TextSize = 14; at.Font = Enum.Font.GothamBlack
-    at.TextXAlignment = Enum.TextXAlignment.Left; at.Parent = about
-    local as2 = Instance.new("TextLabel"); as2.Size = UDim2.new(1,0,0,12); as2.Position = UDim2.new(0,0,0,26)
-    as2.BackgroundTransparency = 1; as2.Text = "AudioCrafter Style  Â·  Purple Edition"
+    gradient(aStrip, T.Purple, T.Orange, 90)
+    local at = Instance.new("TextLabel"); at.Size = UDim2.new(1,0,0,20); at.BackgroundTransparency = 1
+    at.Text = "TL MENU v6.0  |  Summer Vibes"; at.TextColor3 = T.TextPure; at.TextSize = 13
+    at.Font = Enum.Font.GothamBlack; at.TextXAlignment = Enum.TextXAlignment.Left; at.Parent = about
+    local as2 = Instance.new("TextLabel"); as2.Size = UDim2.new(1,0,0,12); as2.Position = UDim2.new(0,0,0,24)
+    as2.BackgroundTransparency = 1; as2.Text = "Purple x Orange Edition  |  by TL Scripts"
     as2.TextColor3 = T.TextMuted; as2.TextSize = 9; as2.Font = Enum.Font.Gotham; as2.TextXAlignment = Enum.TextXAlignment.Left; as2.Parent = about
 
-    makeSection(contentScroll, "DANGER")
-    makeButton(contentScroll, "âœ•  Menu schlieÃŸen", function()
-        tw(mainFrame, {Size = UDim2.new(0,WIN_W,0,0), BackgroundTransparency = 1}, 0.22, Enum.EasingStyle.Quart)
-        task.wait(0.25); pcall(function() gui:Destroy() end)
+    makeSection(contentScroll, "AKTIONEN")
+    makeButton(contentScroll, "Menu schliessen", function()
+        tw(mainFrame, {Size = UDim2.new(0,WIN_W,0,0)}, 0.2, Enum.EasingStyle.Quart)
+        task.wait(0.22); pcall(function() gui:Destroy() end)
     end)
-    makeButton(contentScroll, "â†º  Test Notification", function() notify("Test!", "Alles funktioniert perfekt!", "success") end, true)
+    makeButton(contentScroll, "Test Notification", function()
+        notify("Test!", "Alles funktioniert perfekt!", "success")
+    end, true)
 end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [12] TAB BUTTONS ERSTELLEN
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [12] SIDEBAR TAB BUTTONS
 local tabDefs = {
-    {name="Home"}, {name="Player"}, {name="World"},
-    {name="Tools"}, {name="Players"}, {name="Settings"},
+    {name="Home",     icon="H"},
+    {name="Player",   icon="P"},
+    {name="World",    icon="W"},
+    {name="Tools",    icon="T"},
+    {name="Players",  icon="PL"},
+    {name="Settings", icon="S"},
 }
 local activeTabBtn = nil
 
 local function switchTab(name, btnRef)
     if activeTabBtn and activeTabBtn ~= btnRef then
-        tw(activeTabBtn, {BackgroundColor3 = T.TabBG, BackgroundTransparency = 0.2})
-        local oldGrad = activeTabBtn:FindFirstChildWhichIsA("UIGradient")
+        -- Deactivate old
+        local oldGrad = activeTabBtn:FindFirstChild("_activeGrad")
         if oldGrad then oldGrad:Destroy() end
-        local oldTxt = activeTabBtn:FindFirstChildWhichIsA("TextLabel")
-        if oldTxt then tw(oldTxt, {TextColor3 = T.TextSec}, 0.1) end
+        local oldBar = activeTabBtn:FindFirstChild("_activeBar")
+        if oldBar then tw(oldBar, {BackgroundTransparency = 1}, 0.15) end
+        tw(activeTabBtn, {BackgroundTransparency = 1}, 0.15)
+        local oldIcon = activeTabBtn:FindFirstChild("_icon")
+        if oldIcon then tw(oldIcon, {TextColor3 = T.TextMuted}, 0.15) end
+        local oldLbl = activeTabBtn:FindFirstChild("_label")
+        if oldLbl then tw(oldLbl, {TextColor3 = T.TextMuted}, 0.15) end
     end
     activeTabBtn = btnRef
-    tw(btnRef, {BackgroundColor3 = T.Purple, BackgroundTransparency = 0}, 0.15)
-    -- Add gradient to active tab
-    local existingGrad = btnRef:FindFirstChildWhichIsA("UIGradient")
-    if not existingGrad then
-        local grad = Instance.new("UIGradient")
-        grad.Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0,   Color3.fromRGB(148, 43, 255)),
-            ColorSequenceKeypoint.new(1,   Color3.fromRGB(255, 110, 35)),
-        })
-        grad.Rotation = 90
-        grad.Parent = btnRef
-    end
-    local newTxt = btnRef:FindFirstChildWhichIsA("TextLabel")
-    if newTxt then tw(newTxt, {TextColor3 = T.White}, 0.1) end
+    -- Activate new
+    tw(btnRef, {BackgroundColor3 = T.Purple, BackgroundTransparency = 0.7}, 0.15)
+    local grad = Instance.new("UIGradient")
+    grad.Name = "_activeGrad"
+    grad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(148,43,255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255,110,35)),
+    })
+    grad.Rotation = 90; grad.Transparency = NumberSequence.new(0.75); grad.Parent = btnRef
+    local bar = btnRef:FindFirstChild("_activeBar")
+    if bar then tw(bar, {BackgroundTransparency = 0}, 0.15) end
+    local icon = btnRef:FindFirstChild("_icon")
+    if icon then tw(icon, {TextColor3 = T.OrangeLight}, 0.15) end
+    local lbl = btnRef:FindFirstChild("_label")
+    if lbl then tw(lbl, {TextColor3 = T.White}, 0.15) end
     clearContent()
     if pages[name] then pcall(pages[name]) end
 end
 
 for i, data in ipairs(tabDefs) do
     local isFirst = i == 1
-    local btn = Instance.new("TextButton"); btn.Size = UDim2.new(0,100,0,32)
-    btn.BackgroundColor3 = isFirst and T.Purple or T.TabBG
-    btn.BackgroundTransparency = isFirst and 0 or 0.2; btn.Text = ""
-    btn.AutoButtonColor = false; btn.ZIndex = tabBar.ZIndex + 2; btn.Parent = tabInner; cr(btn,16)
-    if not isFirst then st(btn, T.Border, 1, 0.4) end
-    -- Gradient on first (active) tab
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1,0,0,58); btn.BackgroundColor3 = T.Purple
+    btn.BackgroundTransparency = 1; btn.Text = ""
+    btn.AutoButtonColor = false; btn.ZIndex = sidebar.ZIndex+1; btn.Parent = sidebar; cr(btn,10)
+
+    -- Active left indicator bar
+    local bar = Instance.new("Frame")
+    bar.Name = "_activeBar"; bar.Size = UDim2.new(0,3,0,30); bar.Position = UDim2.new(0,0,0.5,-15)
+    bar.BackgroundColor3 = T.Orange; bar.BackgroundTransparency = 1; bar.BorderSizePixel = 0
+    bar.ZIndex = btn.ZIndex+1; bar.Parent = btn; cr(bar,2)
+    gradient(bar, T.Purple, T.Orange, 90)
+
+    -- Icon
+    local icon = Instance.new("TextLabel")
+    icon.Name = "_icon"; icon.Size = UDim2.new(1,0,0,20); icon.Position = UDim2.new(0,0,0,10)
+    icon.BackgroundTransparency = 1; icon.Text = data.icon
+    icon.TextColor3 = isFirst and T.OrangeLight or T.TextMuted; icon.TextSize = 11
+    icon.Font = Enum.Font.GothamBlack; icon.ZIndex = btn.ZIndex+1; icon.Parent = btn
+
+    -- Label
+    local lbl = Instance.new("TextLabel")
+    lbl.Name = "_label"; lbl.Size = UDim2.new(1,0,0,12); lbl.Position = UDim2.new(0,0,0,33)
+    lbl.BackgroundTransparency = 1; lbl.Text = data.name
+    lbl.TextColor3 = isFirst and T.White or T.TextMuted; lbl.TextSize = 8
+    lbl.Font = Enum.Font.GothamBold; lbl.ZIndex = btn.ZIndex+1; lbl.Parent = btn
+
     if isFirst then
-        local grad = Instance.new("UIGradient")
-        grad.Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(148, 43, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 110, 35)),
-        })
-        grad.Rotation = 90
-        grad.Parent = btn
+        activeTabBtn = btn
+        tw(btn, {BackgroundTransparency = 0.7}, 0)
+        local grad = Instance.new("UIGradient"); grad.Name = "_activeGrad"
+        grad.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, T.Purple), ColorSequenceKeypoint.new(1, T.Orange)})
+        grad.Rotation = 90; grad.Transparency = NumberSequence.new(0.75); grad.Parent = btn
+        tw(bar, {BackgroundTransparency = 0}, 0)
     end
-    local lbl = Instance.new("TextLabel"); lbl.Size = UDim2.new(1,0,1,0); lbl.BackgroundTransparency = 1
-    lbl.Text = data.name; lbl.TextColor3 = isFirst and T.White or T.TextSec
-    lbl.TextSize = 11; lbl.Font = Enum.Font.GothamBold; lbl.ZIndex = btn.ZIndex+1; lbl.Parent = btn
-    if isFirst then activeTabBtn = btn end
+
     local cName, cBtn = data.name, btn
     btn.MouseButton1Click:Connect(function() switchTab(cName, cBtn) end)
-    btn.MouseEnter:Connect(function() if cBtn ~= activeTabBtn then tw(cBtn, {BackgroundTransparency = 0.05}, 0.1) end end)
-    btn.MouseLeave:Connect(function() if cBtn ~= activeTabBtn then tw(cBtn, {BackgroundTransparency = 0.2}, 0.1) end end)
-end
-
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [13] FPS / PING ANZEIGE
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-local fpsPing = Instance.new("TextLabel"); fpsPing.Size = UDim2.new(0,120,1,0); fpsPing.Position = UDim2.new(0,210,0,0)
-fpsPing.BackgroundTransparency = 1; fpsPing.Text = "FPS -- Â· PING --ms"; fpsPing.TextColor3 = T.TextMuted
-fpsPing.TextSize = 9; fpsPing.Font = Enum.Font.GothamBold; fpsPing.TextXAlignment = Enum.TextXAlignment.Left
-fpsPing.ZIndex = topBar.ZIndex+1; fpsPing.Parent = topBar
-
-local fpsCount, lastTick = 0, tick()
-RunService.RenderStepped:Connect(function()
-    fpsCount += 1; local now = tick()
-    if now - lastTick >= 1 then
-        local fps = math.round(fpsCount / (now - lastTick)); local ping = 0
-        pcall(function() ping = math.round(LocalPlayer:GetNetworkPing() * 1000) end)
-        fpsPing.Text = "FPS "..fps.."  |  "..ping.."ms"
-        fpsPing.TextColor3 = ping < 80 and T.Success or ping < 150 and T.Warning or T.Danger
-        fpsCount = 0; lastTick = now
-    end
-end)
-
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [14] DRAGGING
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-do
-    local dragging, dragStart, startPos = false, nil, nil
-    topBar.InputBegan:Connect(function(i)
-        if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging = true; dragStart = i.Position; startPos = mainFrame.Position end
+    btn.MouseEnter:Connect(function()
+        if cBtn ~= activeTabBtn then tw(cBtn, {BackgroundTransparency = 0.9}, 0.1) end
     end)
-    topBar.InputEnded:Connect(function(i)
-        if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
-    end)
-    UserInputService.InputChanged:Connect(function(i)
-        if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = i.Position - dragStart
-            mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
+    btn.MouseLeave:Connect(function()
+        if cBtn ~= activeTabBtn then tw(cBtn, {BackgroundTransparency = 1}, 0.1) end
     end)
 end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
--- [15] START
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- [13] OPEN ANIMATION (grows upward from bottom-right)
 mainFrame.Size = UDim2.new(0, WIN_W, 0, 0)
-tw(mainFrame, {Size = UDim2.new(0, WIN_W, 0, WIN_H)}, 0.32, Enum.EasingStyle.Back)
+tw(mainFrame, {Size = UDim2.new(0, WIN_W, 0, WIN_H)}, 0.35, Enum.EasingStyle.Back)
+
+-- [14] LOAD HOME + WELCOME NOTIFICATION
 task.delay(0.1, function() pcall(pages["Home"]) end)
-task.delay(0.6, function() notify("TL MENU v6", "Purple Edition geladen!", "success") end)
-print("[TL MENU v6 - Purple Edition] Geladen!")
+task.delay(0.7, function() notify("TL MENU v6", "Summer Vibes Edition geladen!", "success") end)
+print("[TL MENU v6 - Summer Vibes] Geladen!")
