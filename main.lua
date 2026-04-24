@@ -97,31 +97,20 @@ local WIN_W, WIN_H = 640, 460
 local SB = 52  -- sidebar width
 local TB = 50  -- topbar height
 
--- Border container (UIStroke + ClipsDescendants = buggy in Roblox)
-local borderFrame = Instance.new("Frame")
-borderFrame.Name = "Border"; borderFrame.Size = UDim2.new(0,WIN_W+2,0,WIN_H+2)
-borderFrame.Position = UDim2.new(0.5,-(WIN_W+2)/2,0.5,-(WIN_H+2)/2)
-borderFrame.BackgroundColor3 = T.Border; borderFrame.BackgroundTransparency = 0.4
-borderFrame.BorderSizePixel = 0; borderFrame.Parent = gui; cr(borderFrame,13)
-
 local main = Instance.new("Frame")
 main.Name = "MainWindow"; main.Size = UDim2.new(0,WIN_W,0,WIN_H)
 main.Position = UDim2.new(0.5,-WIN_W/2,0.5,-WIN_H/2)
 main.BackgroundColor3 = T.BG; main.BackgroundTransparency = 0
-main.BorderSizePixel = 0; main.ClipsDescendants = false; main.Parent = gui
+main.BorderSizePixel = 0; main.ClipsDescendants = true; main.Parent = gui
 cr(main,12)
 
--- TOP BAR (needs rounded top corners to match main frame)
+-- TOP BAR
 local topBar = Instance.new("Frame")
-topBar.Size = UDim2.new(1,0,0,TB+12); topBar.BackgroundColor3 = T.TopBar
+topBar.Size = UDim2.new(1,0,0,TB)
+-- Same color as BG so rounded corner blends in perfectly
+topBar.BackgroundColor3 = T.TopBar
 topBar.BackgroundTransparency = 0; topBar.BorderSizePixel = 0
 topBar.ZIndex = main.ZIndex+3; topBar.Parent = main
-cr(topBar,12)
--- Cover bottom rounded part of topBar so bottom edge is straight
-local topBarCover = Instance.new("Frame")
-topBarCover.Size = UDim2.new(1,0,0,12); topBarCover.Position = UDim2.new(0,0,1,-12)
-topBarCover.BackgroundColor3 = T.TopBar; topBarCover.BackgroundTransparency = 0
-topBarCover.BorderSizePixel = 0; topBarCover.ZIndex = topBar.ZIndex+1; topBarCover.Parent = topBar
 
 local topSep = Instance.new("Frame")
 topSep.Size = UDim2.new(1,0,0,1); topSep.Position = UDim2.new(0,0,1,-1)
