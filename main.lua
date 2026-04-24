@@ -666,7 +666,7 @@ RunService.RenderStepped:Connect(function()
     if now - lastTick >= 1 then
         local fps = math.round(fpsCount / (now - lastTick)); local ping = 0
         pcall(function() ping = math.round(LocalPlayer:GetNetworkPing() * 1000) end)
-        fpsPing.Text = "FPS "..fps.."  Â·  "..ping.."ms"
+        fpsPing.Text = "FPS "..fps.."  |  "..ping.."ms"
         fpsPing.TextColor3 = ping < 80 and T.Success or ping < 150 and T.Warning or T.Danger
         fpsCount = 0; lastTick = now
     end
