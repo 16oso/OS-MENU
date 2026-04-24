@@ -75,9 +75,15 @@ if not pcall(function() gui.Parent = CoreGui end) then gui.Parent = LocalPlayer:
 
 -- NOTIFICATIONS
 local notifHolder = Instance.new("Frame")
-notifHolder.Size = UDim2.new(0,270,1,-20); notifHolder.Position = UDim2.new(0,10,0,10)
-notifHolder.BackgroundTransparency = 1; notifHolder.Parent = gui
-local nl = Instance.new("UIListLayout"); nl.Padding = UDim.new(0,6); nl.VerticalAlignment = Enum.VerticalAlignment.Bottom; nl.Parent = notifHolder
+notifHolder.Size = UDim2.new(0,260,0,320)
+notifHolder.Position = UDim2.new(0,10,1,-330)
+notifHolder.BackgroundTransparency = 1
+notifHolder.BorderSizePixel = 0
+notifHolder.Parent = gui
+local nl = Instance.new("UIListLayout")
+nl.Padding = UDim.new(0,6)
+nl.VerticalAlignment = Enum.VerticalAlignment.Bottom
+nl.Parent = notifHolder
 
 local function notify(title, text, ntype)
     local accent = ntype=="success" and T.Green or ntype=="error" and T.Red or ntype=="warning" and T.Yellow or T.Accent
