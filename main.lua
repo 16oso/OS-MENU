@@ -37,29 +37,46 @@ end)
 -- [2] THEME / PALETTE
 -- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local T = {
-    BG          = Color3.fromRGB(12,10,18),
-    Panel       = Color3.fromRGB(15,13,22),
-    Card        = Color3.fromRGB(20,17,30),
-    CardHover   = Color3.fromRGB(28,24,40),
-    Purple      = Color3.fromRGB(155,60,220),
-    PurpleLight = Color3.fromRGB(180,90,255),
-    PurpleDim   = Color3.fromRGB(100,40,150),
-    Pink        = Color3.fromRGB(220,60,160),
-    White       = Color3.fromRGB(255,255,255),
-    TextPure    = Color3.fromRGB(255,255,255),
-    TextMain    = Color3.fromRGB(210,200,230),
-    TextSec     = Color3.fromRGB(150,140,170),
-    TextMuted   = Color3.fromRGB(90,80,110),
-    Success     = Color3.fromRGB(50,210,130),
-    Danger      = Color3.fromRGB(240,70,80),
-    Warning     = Color3.fromRGB(240,180,40),
-    Border      = Color3.fromRGB(60,40,90),
-    BorderMid   = Color3.fromRGB(100,60,150),
-    TabActive   = Color3.fromRGB(255,255,255),
-    TabBG       = Color3.fromRGB(30,25,45),
-    Dot1        = Color3.fromRGB(220,80,120),
-    Dot2        = Color3.fromRGB(200,60,60),
-    Dot3        = Color3.fromRGB(230,160,180),
+    -- Backgrounds (warm dark)
+    BG          = Color3.fromRGB(10, 8, 14),
+    Panel       = Color3.fromRGB(14, 11, 20),
+    Card        = Color3.fromRGB(20, 15, 28),
+    CardHover   = Color3.fromRGB(28, 20, 38),
+
+    -- Primary Accents (Purple -> Orange)
+    Purple      = Color3.fromRGB(148, 43, 255),
+    PurpleLight = Color3.fromRGB(178, 90, 255),
+    PurpleDim   = Color3.fromRGB(90, 25, 160),
+    Orange      = Color3.fromRGB(255, 110, 35),
+    OrangeLight = Color3.fromRGB(255, 150, 70),
+    Pink        = Color3.fromRGB(255, 65, 130),
+
+    -- Neutral
+    White       = Color3.fromRGB(255, 255, 255),
+
+    -- Typography
+    TextPure    = Color3.fromRGB(255, 255, 255),
+    TextMain    = Color3.fromRGB(225, 215, 240),
+    TextSec     = Color3.fromRGB(155, 140, 175),
+    TextMuted   = Color3.fromRGB(85, 72, 108),
+
+    -- Semantic
+    Success     = Color3.fromRGB(45, 215, 125),
+    Danger      = Color3.fromRGB(255, 65, 75),
+    Warning     = Color3.fromRGB(255, 175, 35),
+
+    -- Borders
+    Border      = Color3.fromRGB(55, 35, 80),
+    BorderMid   = Color3.fromRGB(95, 55, 145),
+
+    -- Tab Bar
+    TabActive   = Color3.fromRGB(255, 255, 255),
+    TabBG       = Color3.fromRGB(22, 16, 34),
+
+    -- Decorative Dots (summer vibes)
+    Dot1        = Color3.fromRGB(255, 110, 35),
+    Dot2        = Color3.fromRGB(148, 43, 255),
+    Dot3        = Color3.fromRGB(255, 175, 70),
 }
 
 -- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -141,9 +158,16 @@ mainFrame.BorderSizePixel = 0; mainFrame.ClipsDescendants = true; mainFrame.Pare
 cr(mainFrame,14); st(mainFrame, T.Border, 1.5, 0.1)
 
 local glowEdge = Instance.new("Frame")
-glowEdge.Size = UDim2.new(1,0,0,2); glowEdge.BackgroundColor3 = T.Purple
-glowEdge.BackgroundTransparency = 0.3; glowEdge.BorderSizePixel = 0
+glowEdge.Size = UDim2.new(1,0,0,3); glowEdge.BackgroundColor3 = T.Purple
+glowEdge.BackgroundTransparency = 0; glowEdge.BorderSizePixel = 0
 glowEdge.ZIndex = mainFrame.ZIndex + 5; glowEdge.Parent = mainFrame
+local glowGrad = Instance.new("UIGradient")
+glowGrad.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0,   Color3.fromRGB(148, 43, 255)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(210, 70, 170)),
+    ColorSequenceKeypoint.new(1,   Color3.fromRGB(255, 110, 35)),
+})
+glowGrad.Parent = glowEdge
 
 -- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- [7] TOP BAR
@@ -624,13 +648,26 @@ local activeTabBtn = nil
 local function switchTab(name, btnRef)
     if activeTabBtn and activeTabBtn ~= btnRef then
         tw(activeTabBtn, {BackgroundColor3 = T.TabBG, BackgroundTransparency = 0.2})
+        local oldGrad = activeTabBtn:FindFirstChildWhichIsA("UIGradient")
+        if oldGrad then oldGrad:Destroy() end
         local oldTxt = activeTabBtn:FindFirstChildWhichIsA("TextLabel")
         if oldTxt then tw(oldTxt, {TextColor3 = T.TextSec}, 0.1) end
     end
     activeTabBtn = btnRef
-    tw(btnRef, {BackgroundColor3 = T.White, BackgroundTransparency = 0}, 0.15)
+    tw(btnRef, {BackgroundColor3 = T.Purple, BackgroundTransparency = 0}, 0.15)
+    -- Add gradient to active tab
+    local existingGrad = btnRef:FindFirstChildWhichIsA("UIGradient")
+    if not existingGrad then
+        local grad = Instance.new("UIGradient")
+        grad.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0,   Color3.fromRGB(148, 43, 255)),
+            ColorSequenceKeypoint.new(1,   Color3.fromRGB(255, 110, 35)),
+        })
+        grad.Rotation = 90
+        grad.Parent = btnRef
+    end
     local newTxt = btnRef:FindFirstChildWhichIsA("TextLabel")
-    if newTxt then tw(newTxt, {TextColor3 = Color3.fromRGB(0,0,0)}, 0.1) end
+    if newTxt then tw(newTxt, {TextColor3 = T.White}, 0.1) end
     clearContent()
     if pages[name] then pcall(pages[name]) end
 end
@@ -638,12 +675,22 @@ end
 for i, data in ipairs(tabDefs) do
     local isFirst = i == 1
     local btn = Instance.new("TextButton"); btn.Size = UDim2.new(0,100,0,32)
-    btn.BackgroundColor3 = isFirst and T.White or T.TabBG
+    btn.BackgroundColor3 = isFirst and T.Purple or T.TabBG
     btn.BackgroundTransparency = isFirst and 0 or 0.2; btn.Text = ""
     btn.AutoButtonColor = false; btn.ZIndex = tabBar.ZIndex + 2; btn.Parent = tabInner; cr(btn,16)
     if not isFirst then st(btn, T.Border, 1, 0.4) end
+    -- Gradient on first (active) tab
+    if isFirst then
+        local grad = Instance.new("UIGradient")
+        grad.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(148, 43, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 110, 35)),
+        })
+        grad.Rotation = 90
+        grad.Parent = btn
+    end
     local lbl = Instance.new("TextLabel"); lbl.Size = UDim2.new(1,0,1,0); lbl.BackgroundTransparency = 1
-    lbl.Text = data.name; lbl.TextColor3 = isFirst and Color3.fromRGB(0,0,0) or T.TextSec
+    lbl.Text = data.name; lbl.TextColor3 = isFirst and T.White or T.TextSec
     lbl.TextSize = 11; lbl.Font = Enum.Font.GothamBold; lbl.ZIndex = btn.ZIndex+1; lbl.Parent = btn
     if isFirst then activeTabBtn = btn end
     local cName, cBtn = data.name, btn
