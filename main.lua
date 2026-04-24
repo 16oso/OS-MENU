@@ -286,22 +286,28 @@ local NAV_W,NAV_H=300,50
 local navWrap=Instance.new("Frame"); navWrap.Size=UDim2.new(0,NAV_W,0,NAV_H+20); navWrap.Position=UDim2.new(0.5,-NAV_W/2,1,-(NAV_H+18)); navWrap.BackgroundTransparency=1; navWrap.ZIndex=5; navWrap.Parent=gui
 
 -- Collapse/Expand arrow button above nav
-local menuVisible=true
-local expandArrow=Instance.new("TextButton"); expandArrow.Size=UDim2.new(1,0,0,16); expandArrow.BackgroundTransparency=1; expandArrow.Text="v"; expandArrow.TextColor3=T.TextSec; expandArrow.TextSize=11; expandArrow.Font=Enum.Font.GothamBold; expandArrow.ZIndex=6; expandArrow.AutoButtonColor=false; expandArrow.Parent=navWrap
-expandArrow.MouseEnter:Connect(function() tw(expandArrow,{TextColor3=T.White},0.1) end)
-expandArrow.MouseLeave:Connect(function() tw(expandArrow,{TextColor3=T.TextSec},0.1) end)
-expandArrow.MouseButton1Click:Connect(function()
-    menuVisible=not menuVisible
-    if menuVisible then
-        expandArrow.Text="v"
-        tw(contentFrame,{Size=UDim2.new(0,CONT_W,0,CONT_H),BackgroundTransparency=0.06},0.28,Enum.EasingStyle.Back)
-    else
-        expandArrow.Text="^"
-        tw(contentFrame,{Size=UDim2.new(0,CONT_W,0,0),BackgroundTransparency=1},0.22,Enum.EasingStyle.Quart)
-    end
-end)
+local navVisible=true
+local expandArrow=Instance.new("TextButton")
+expandArrow.Size=UDim2.new(1,0,0,16); expandArrow.BackgroundTransparency=1
+expandArrow.Text="v"; expandArrow.TextColor3=T.White
+expandArrow.TextSize=12; expandArrow.Font=Enum.Font.GothamBold
+expandArrow.ZIndex=6; expandArrow.AutoButtonColor=false; expandArrow.Parent=navWrap
 
 local navPill=Instance.new("Frame"); navPill.Size=UDim2.new(1,0,0,NAV_H); navPill.Position=UDim2.new(0,0,0,16); navPill.BackgroundColor3=T.NavBG; navPill.BackgroundTransparency=0.06; navPill.BorderSizePixel=0; navPill.ZIndex=5; navPill.Parent=navWrap; cr(navPill,NAV_H/2); st(navPill,T.Border,1,0.5)
+
+-- Arrow click: collapse navPill downward / expand back
+expandArrow.MouseButton1Click:Connect(function()
+    navVisible = not navVisible
+    if navVisible then
+        expandArrow.Text = "v"
+        tw(navPill, {Size=UDim2.new(1,0,0,NAV_H), BackgroundTransparency=0.06}, 0.28, Enum.EasingStyle.Back)
+        tw(navPill, {Position=UDim2.new(0,0,0,16)}, 0.28, Enum.EasingStyle.Back)
+    else
+        expandArrow.Text = "^"
+        tw(navPill, {Size=UDim2.new(1,0,0,0), BackgroundTransparency=1}, 0.22, Enum.EasingStyle.Quart)
+        tw(navPill, {Position=UDim2.new(0,0,0,NAV_H+16)}, 0.22, Enum.EasingStyle.Quart)
+    end
+end)
 
 -- Clock
 local clockLbl=Instance.new("TextLabel"); clockLbl.Size=UDim2.new(0,44,1,0); clockLbl.Position=UDim2.new(0,14,0,0); clockLbl.BackgroundTransparency=1; clockLbl.Text="00:00"; clockLbl.TextColor3=T.White; clockLbl.TextSize=11; clockLbl.Font=Enum.Font.GothamBlack; clockLbl.ZIndex=navPill.ZIndex+1; clockLbl.Parent=navPill
@@ -315,11 +321,11 @@ local navIconLayout=Instance.new("UIListLayout"); navIconLayout.FillDirection=En
 local gearBtn=Instance.new("TextButton"); gearBtn.Size=UDim2.new(0,32,0,32); gearBtn.Position=UDim2.new(1,-42,0.5,-16); gearBtn.BackgroundTransparency=1; gearBtn.Text="S"; gearBtn.TextColor3=T.TextMuted; gearBtn.TextSize=11; gearBtn.Font=Enum.Font.GothamBold; gearBtn.ZIndex=navPill.ZIndex+1; gearBtn.Parent=navPill
 
 local tabDefs={
-    {name="Home",   icon="H",  page=pages["Home"]},
-    {name="Player", icon="Me", page=pages["Player"]},
-    {name="World",  icon="W",  page=pages["World"]},
-    {name="Tools",  icon="T",  page=pages["Tools"]},
-    {name="Players",icon="PL", page=pages["Players"]},
+    {name="Home",   icon="🏠",  page=pages["Home"]},
+    {name="Player", icon="👤", page=pages["Player"]},
+    {name="World",  icon="🌎",  page=pages["World"]},
+    {name="Tools",  icon="⚔️",  page=pages["Tools"]},
+    {name="Players",icon="👥", page=pages["Players"]},
 }
 local activeNavBtn=nil
 
