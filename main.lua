@@ -66,13 +66,18 @@ cr(contentFrame,14); st(contentFrame,T.Border,1,0.5)
 pad(contentFrame,10,10,10,10)
 local contentLayout=Instance.new("UIListLayout"); contentLayout.Padding=UDim.new(0,7); contentLayout.Parent=contentFrame
 
--- PAGE TITLE
-local titleFrame=Instance.new("Frame"); titleFrame.Size=UDim2.new(1,0,0,32); titleFrame.BackgroundTransparency=1; titleFrame.Parent=contentFrame
-local pageTitleLbl=Instance.new("TextLabel"); pageTitleLbl.Name="PageTitle"; pageTitleLbl.Size=UDim2.new(1,0,0,18); pageTitleLbl.BackgroundTransparency=1; pageTitleLbl.Text="Home"; pageTitleLbl.TextColor3=T.White; pageTitleLbl.TextSize=16; pageTitleLbl.Font=Enum.Font.GothamBlack; pageTitleLbl.TextXAlignment=Enum.TextXAlignment.Left; pageTitleLbl.Parent=titleFrame
-local pageSubLbl=Instance.new("TextLabel"); pageSubLbl.Name="PageSub"; pageSubLbl.Size=UDim2.new(1,0,0,11); pageSubLbl.Position=UDim2.new(0,0,0,20); pageSubLbl.BackgroundTransparency=1; pageSubLbl.Text="What's up?"; pageSubLbl.TextColor3=T.TextMuted; pageSubLbl.TextSize=9; pageSubLbl.Font=Enum.Font.Gotham; pageSubLbl.TextXAlignment=Enum.TextXAlignment.Left; pageSubLbl.Parent=titleFrame
+-- PAGE HEADER (title left + tabs right)
+local titleFrame=Instance.new("Frame"); titleFrame.Size=UDim2.new(1,0,0,38); titleFrame.BackgroundTransparency=1; titleFrame.Parent=contentFrame
 
--- PAGE CONTENT CONTAINER (cleared on tab switch)
-local pageContainer=Instance.new("Frame"); pageContainer.Size=UDim2.new(1,0,0,270); pageContainer.BackgroundTransparency=1; pageContainer.ClipsDescendants=false; pageContainer.Parent=contentFrame
+local pageTitleLbl=Instance.new("TextLabel"); pageTitleLbl.Name="PageTitle"; pageTitleLbl.Size=UDim2.new(0,160,0,18); pageTitleLbl.Position=UDim2.new(0,0,0,2); pageTitleLbl.BackgroundTransparency=1; pageTitleLbl.Text="Home"; pageTitleLbl.TextColor3=T.White; pageTitleLbl.TextSize=16; pageTitleLbl.Font=Enum.Font.GothamBlack; pageTitleLbl.TextXAlignment=Enum.TextXAlignment.Left; pageTitleLbl.Parent=titleFrame
+local pageSubLbl=Instance.new("TextLabel"); pageSubLbl.Name="PageSub"; pageSubLbl.Size=UDim2.new(0,160,0,11); pageSubLbl.Position=UDim2.new(0,0,0,22); pageSubLbl.BackgroundTransparency=1; pageSubLbl.Text="What's up?"; pageSubLbl.TextColor3=T.TextMuted; pageSubLbl.TextSize=9; pageSubLbl.Font=Enum.Font.Gotham; pageSubLbl.TextXAlignment=Enum.TextXAlignment.Left; pageSubLbl.Parent=titleFrame
+
+-- TOP-RIGHT TAB BAR
+local tabBar=Instance.new("Frame"); tabBar.Size=UDim2.new(0,210,0,32); tabBar.Position=UDim2.new(1,-210,0,3); tabBar.BackgroundTransparency=1; tabBar.ZIndex=3; tabBar.Parent=titleFrame
+local tabBarLayout=Instance.new("UIListLayout"); tabBarLayout.FillDirection=Enum.FillDirection.Horizontal; tabBarLayout.HorizontalAlignment=Enum.HorizontalAlignment.Right; tabBarLayout.VerticalAlignment=Enum.VerticalAlignment.Center; tabBarLayout.Padding=UDim.new(0,4); tabBarLayout.Parent=tabBar
+
+-- PAGE CONTENT CONTAINER
+local pageContainer=Instance.new("Frame"); pageContainer.Size=UDim2.new(1,0,0,262); pageContainer.BackgroundTransparency=1; pageContainer.ClipsDescendants=false; pageContainer.Parent=contentFrame
 local pageLayout=Instance.new("UIListLayout"); pageLayout.Padding=UDim.new(0,7); pageLayout.Parent=pageContainer
 
 -- CARD BUILDER
@@ -281,81 +286,41 @@ pages["Settings"]={title="Settings",sub="Configure OS MENU",fn=function()
     makeBtn(pageContainer,"Test Notification",function() notify("OS MENU","Everything works!","success") end,T.CardBlue)
 end}
 
--- BOTTOM NAVIGATION BAR
-local NAV_W,NAV_H=300,50
-local navWrap=Instance.new("Frame"); navWrap.Size=UDim2.new(0,NAV_W,0,NAV_H+20); navWrap.Position=UDim2.new(0.5,-NAV_W/2,1,-(NAV_H+18)); navWrap.BackgroundTransparency=1; navWrap.ZIndex=5; navWrap.Parent=gui
-
--- Collapse/Expand arrow button above nav
-local navVisible=true
-local expandArrow=Instance.new("TextButton")
-expandArrow.Size=UDim2.new(1,0,0,16); expandArrow.BackgroundTransparency=1
-expandArrow.Text="v"; expandArrow.TextColor3=T.White
-expandArrow.TextSize=12; expandArrow.Font=Enum.Font.GothamBold
-expandArrow.ZIndex=6; expandArrow.AutoButtonColor=false; expandArrow.Parent=navWrap
-
-local navPill=Instance.new("Frame"); navPill.Size=UDim2.new(1,0,0,NAV_H); navPill.Position=UDim2.new(0,0,0,16); navPill.BackgroundColor3=T.NavBG; navPill.BackgroundTransparency=0.06; navPill.BorderSizePixel=0; navPill.ZIndex=5; navPill.Parent=navWrap; cr(navPill,NAV_H/2); st(navPill,T.Border,1,0.5)
-
--- Arrow click: collapse navPill downward / expand back
-expandArrow.MouseButton1Click:Connect(function()
-    navVisible = not navVisible
-    if navVisible then
-        expandArrow.Text = "v"
-        tw(navPill, {Size=UDim2.new(1,0,0,NAV_H), BackgroundTransparency=0.06}, 0.28, Enum.EasingStyle.Back)
-        tw(navPill, {Position=UDim2.new(0,0,0,16)}, 0.28, Enum.EasingStyle.Back)
-    else
-        expandArrow.Text = "^"
-        tw(navPill, {Size=UDim2.new(1,0,0,0), BackgroundTransparency=1}, 0.22, Enum.EasingStyle.Quart)
-        tw(navPill, {Position=UDim2.new(0,0,0,NAV_H+16)}, 0.22, Enum.EasingStyle.Quart)
-    end
-end)
-
--- Clock
-local clockLbl=Instance.new("TextLabel"); clockLbl.Size=UDim2.new(0,44,1,0); clockLbl.Position=UDim2.new(0,14,0,0); clockLbl.BackgroundTransparency=1; clockLbl.Text="00:00"; clockLbl.TextColor3=T.White; clockLbl.TextSize=11; clockLbl.Font=Enum.Font.GothamBlack; clockLbl.ZIndex=navPill.ZIndex+1; clockLbl.Parent=navPill
-task.spawn(function() while true do local t=os.date("*t"); clockLbl.Text=string.format("%02d:%02d",t.hour,t.min); task.wait(10) end end)
-
--- Nav icons frame
-local navIcons=Instance.new("Frame"); navIcons.Size=UDim2.new(0,160,1,0); navIcons.Position=UDim2.new(0,60,0,0); navIcons.BackgroundTransparency=1; navIcons.ZIndex=navPill.ZIndex+1; navIcons.Parent=navPill
-local navIconLayout=Instance.new("UIListLayout"); navIconLayout.FillDirection=Enum.FillDirection.Horizontal; navIconLayout.HorizontalAlignment=Enum.HorizontalAlignment.Center; navIconLayout.VerticalAlignment=Enum.VerticalAlignment.Center; navIconLayout.Padding=UDim.new(0,4); navIconLayout.Parent=navIcons
-
--- Gear on right
-local gearBtn=Instance.new("TextButton"); gearBtn.Size=UDim2.new(0,32,0,32); gearBtn.Position=UDim2.new(1,-42,0.5,-16); gearBtn.BackgroundTransparency=1; gearBtn.Text="S"; gearBtn.TextColor3=T.TextMuted; gearBtn.TextSize=11; gearBtn.Font=Enum.Font.GothamBold; gearBtn.ZIndex=navPill.ZIndex+1; gearBtn.Parent=navPill
-
+-- TOP-RIGHT TABS (inside contentFrame header)
 local tabDefs={
-    {name="Home",   icon="🏠",  page=pages["Home"]},
-    {name="Player", icon="👤", page=pages["Player"]},
-    {name="World",  icon="🌎",  page=pages["World"]},
-    {name="Tools",  icon="⚔️",  page=pages["Tools"]},
-    {name="Players",icon="👥", page=pages["Players"]},
+    {name="Home",     icon="H",   page=pages["Home"]},
+    {name="Player",   icon="Me",  page=pages["Player"]},
+    {name="World",    icon="W",   page=pages["World"]},
+    {name="Tools",    icon="T",   page=pages["Tools"]},
+    {name="Players",  icon="PL",  page=pages["Players"]},
+    {name="Settings", icon="S",   page=pages["Settings"]},
 }
-local activeNavBtn=nil
+local activeTabBtn=nil
 
 local function switchPage(pageData, btnRef)
-    if activeNavBtn and activeNavBtn~=btnRef then
-        tw(activeNavBtn,{BackgroundColor3=T.NavBG,BackgroundTransparency=1},0.15)
-        local ol=activeNavBtn:FindFirstChildWhichIsA("TextLabel"); if ol then tw(ol,{TextColor3=T.TextMuted},0.15) end
+    if activeTabBtn and activeTabBtn~=btnRef then
+        tw(activeTabBtn,{BackgroundColor3=T.NavActive,BackgroundTransparency=1},0.15)
+        local ol=activeTabBtn:FindFirstChildWhichIsA("TextLabel"); if ol then tw(ol,{TextColor3=T.TextMuted},0.15) end
     end
-    activeNavBtn=btnRef
+    activeTabBtn=btnRef
     tw(btnRef,{BackgroundColor3=T.NavActive,BackgroundTransparency=0},0.15)
     local nl2=btnRef:FindFirstChildWhichIsA("TextLabel"); if nl2 then tw(nl2,{TextColor3=T.White},0.15) end
     pageTitleLbl.Text=pageData.title; pageSubLbl.Text=pageData.sub
     clearPage(); pcall(pageData.fn)
 end
 
--- Settings via gear
-gearBtn.MouseButton1Click:Connect(function() switchPage(pages["Settings"],gearBtn) end)
-gearBtn.MouseEnter:Connect(function() tw(gearBtn,{TextColor3=T.White},0.1) end)
-gearBtn.MouseLeave:Connect(function() if gearBtn~=activeNavBtn then tw(gearBtn,{TextColor3=T.TextMuted},0.1) end end)
-
 for i,data in ipairs(tabDefs) do
     local isFirst=i==1
-    local btn=Instance.new("TextButton"); btn.Size=UDim2.new(0,30,0,30); btn.BackgroundColor3=T.NavActive
-    btn.BackgroundTransparency=isFirst and 0 or 1; btn.Text=data.icon; btn.TextColor3=isFirst and T.White or T.TextMuted
-    btn.TextSize=9; btn.Font=Enum.Font.GothamBold; btn.AutoButtonColor=false; btn.ZIndex=navPill.ZIndex+2; btn.Parent=navIcons; cr(btn,15)
-    if isFirst then activeNavBtn=btn end
+    local btn=Instance.new("TextButton"); btn.Size=UDim2.new(0,28,0,28)
+    btn.BackgroundColor3=T.NavActive; btn.BackgroundTransparency=isFirst and 0 or 1
+    btn.Text=data.icon; btn.TextColor3=isFirst and T.White or T.TextMuted
+    btn.TextSize=8; btn.Font=Enum.Font.GothamBold
+    btn.AutoButtonColor=false; btn.ZIndex=4; btn.Parent=tabBar; cr(btn,14)
+    if isFirst then activeTabBtn=btn end
     local pd,cb=data.page,btn
     btn.MouseButton1Click:Connect(function() switchPage(pd,cb) end)
-    btn.MouseEnter:Connect(function() if cb~=activeNavBtn then tw(cb,{BackgroundTransparency=0.7},0.1) end end)
-    btn.MouseLeave:Connect(function() if cb~=activeNavBtn then tw(cb,{BackgroundTransparency=1},0.1) end end)
+    btn.MouseEnter:Connect(function() if cb~=activeTabBtn then tw(cb,{BackgroundTransparency=0.6},0.1) end end)
+    btn.MouseLeave:Connect(function() if cb~=activeTabBtn then tw(cb,{BackgroundTransparency=1},0.1) end end)
 end
 
 -- LOAD HOME
