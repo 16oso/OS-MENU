@@ -312,8 +312,8 @@ local function makePanel(name)
     local p = Instance.new("Frame", ScreenGui)
     p.Name                  = name
     p.Size                  = UDim2.new(0, PANEL_W, 0, 10)
-    p.AnchorPoint           = Vector2.new(0, 0)
-    p.Position              = UDim2.new(0, 61, 0, -600)
+    p.AnchorPoint           = Vector2.new(1, 0)
+    p.Position              = UDim2.new(1, -61, 0, -600)
     p.Visible               = false
     p.ClipsDescendants      = true
     p.BackgroundColor3      = C.panelBg
@@ -403,7 +403,7 @@ local function openPanel(name)
     local vp = workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(1920, 1080)
     p.Visible = true
     twP(p, 0.35, {
-        Position = UDim2.new(0, 61, 0, math.floor((vp.Y - 500) / 2))
+        Position = UDim2.new(1, -61, 0, math.floor((vp.Y - 500) / 2))
     }, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 end
 
@@ -411,7 +411,7 @@ local function closePanel(name)
     local p = panels[name]
     if not p then return end
     twP(p, 0.25, {
-        Position = UDim2.new(0, 61, 0, -600)
+        Position = UDim2.new(1, -61, 0, -600)
     }, Enum.EasingStyle.Quart, Enum.EasingDirection.In).Completed:Connect(function()
         p.Visible = false
     end)
@@ -431,8 +431,8 @@ local NAV_PAD = 6
 local navFrame = Instance.new("Frame", ScreenGui)
 navFrame.Name                  = "Sidebar"
 navFrame.Size                  = UDim2.new(0, NAV_W, 0, NAV_H)
-navFrame.AnchorPoint           = Vector2.new(0, 0.5)
-navFrame.Position              = UDim2.new(0, 4, 0.5, 0)
+navFrame.AnchorPoint           = Vector2.new(1, 0.5)
+navFrame.Position              = UDim2.new(1, -4, 0.5, 0)
 navFrame.BackgroundColor3      = C.panelBg
 navFrame.BackgroundTransparency = 0
 navFrame.BorderSizePixel       = 0
@@ -472,7 +472,7 @@ local function addNavButton(icon, tooltip, panelName, order)
     -- Tooltip
     local tip = Instance.new("TextLabel", btn)
     tip.Size                 = UDim2.new(0, 80, 0, 24)
-    tip.Position             = UDim2.new(1, 8, 0.5, -12)
+    tip.Position             = UDim2.new(0, -88, 0.5, -12)
     tip.BackgroundColor3     = C.bg2
     tip.BackgroundTransparency = 0.1
     tip.BorderSizePixel      = 0
@@ -480,6 +480,7 @@ local function addNavButton(icon, tooltip, panelName, order)
     tip.Font                 = Enum.Font.GothamBold
     tip.TextSize             = 11
     tip.TextColor3           = C.text
+    tip.TextXAlignment       = Enum.TextXAlignment.Right
     tip.ZIndex               = 20
     tip.Visible              = false
     corner(tip, 6)
