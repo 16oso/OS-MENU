@@ -464,10 +464,21 @@ local function addNavButton(icon, tooltip, panelName, order)
     btn.BorderSizePixel       = 0
     btn.LayoutOrder           = order
     btn.ZIndex                = 11
-    btn.Image                 = icon
+    btn.Image                 = (icon:find("rbxassetid") and icon) or ""
     btn.ImageColor3           = C.sub
     btn.ScaleType             = Enum.ScaleType.Fit
     corner(btn, 10)
+
+    -- Emoji Icon
+    if not icon:find("rbxassetid") or icon == "" then
+        local emLbl = Instance.new("TextLabel", btn)
+        emLbl.Size                = UDim2.new(1, 0, 1, 0)
+        emLbl.BackgroundTransparency = 1
+        emLbl.Text                = icon
+        emLbl.TextSize            = 20
+        emLbl.TextColor3          = C.text
+        emLbl.ZIndex              = 12
+    end
 
     -- Tooltip
     local tip = Instance.new("TextLabel", btn)
@@ -581,9 +592,9 @@ end
 -- ========================
 -- [10] NAV BUTTONS
 -- ========================
-addNavButton("rbxassetid://11341987215", "🏠 Home",     "Home",     1)
-addNavButton("rbxassetid://11341987215", "📖 Catalog",  "Catalog",  2)
-addNavButton("rbxassetid://11341987215", "⚙️ Settings", "Settings", 3)
+addNavButton("🏠", "Home",     "Home",     1)
+addNavButton("📖", "Catalog",  "Catalog",  2)
+addNavButton("⚙️", "Settings", "Settings", 3)
 
 -- Adjust nav height to content
 navLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
