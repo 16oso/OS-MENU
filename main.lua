@@ -464,21 +464,16 @@ local function addNavButton(icon, tooltip, panelName, order)
     btn.BorderSizePixel       = 0
     btn.LayoutOrder           = order
     btn.ZIndex                = 11
-    btn.Image                 = (icon:find("rbxassetid") and icon) or ""
-    btn.ImageColor3           = C.sub
+    btn.Image                 = icon
+    btn.ImageColor3           = Color3.new(1, 1, 1)
     btn.ScaleType             = Enum.ScaleType.Fit
     corner(btn, 10)
 
-    -- Emoji Icon
-    if not icon:find("rbxassetid") or icon == "" then
-        local emLbl = Instance.new("TextLabel", btn)
-        emLbl.Size                = UDim2.new(1, 0, 1, 0)
-        emLbl.BackgroundTransparency = 1
-        emLbl.Text                = icon
-        emLbl.TextSize            = 20
-        emLbl.TextColor3          = C.text
-        emLbl.ZIndex              = 12
-    end
+    local imgPad = Instance.new("UIPadding", btn)
+    imgPad.PaddingTop    = UDim.new(0, 8)
+    imgPad.PaddingBottom = UDim.new(0, 8)
+    imgPad.PaddingLeft   = UDim.new(0, 8)
+    imgPad.PaddingRight  = UDim.new(0, 8)
 
     -- Tooltip
     local tip = Instance.new("TextLabel", btn)
@@ -503,21 +498,21 @@ local function addNavButton(icon, tooltip, panelName, order)
     end)
     btn.MouseLeave:Connect(function()
         if activePanel ~= panelName then
-            twP(btn, 0.12, { BackgroundTransparency = 0.6, ImageColor3 = C.sub })
+            twP(btn, 0.12, { BackgroundTransparency = 0.6, ImageColor3 = Color3.new(1, 1, 1) })
         end
         tip.Visible = false
     end)
     btn.MouseButton1Click:Connect(function()
         if activePanel == panelName then
             closePanel(panelName)
-            twP(btn, 0.12, { BackgroundTransparency = 0.6, ImageColor3 = C.sub })
+            twP(btn, 0.12, { BackgroundTransparency = 0.6, ImageColor3 = Color3.new(1, 1, 1) })
             activePanel = nil
         else
             if activePanel then
                 closePanel(activePanel)
                 local old = navButtons[activePanel]
                 if old then
-                    twP(old, 0.12, { BackgroundTransparency = 0.6, ImageColor3 = C.sub })
+                    twP(old, 0.12, { BackgroundTransparency = 0.6, ImageColor3 = Color3.new(1, 1, 1) })
                 end
             end
             openPanel(panelName)
@@ -592,9 +587,9 @@ end
 -- ========================
 -- [10] NAV BUTTONS
 -- ========================
-addNavButton("🏠", "Home",     "Home",     1)
-addNavButton("📖", "Catalog",  "Catalog",  2)
-addNavButton("⚙️", "Settings", "Settings", 3)
+addNavButton("rbxassetid://10723345518", "Home",     "Home",     1)
+addNavButton("rbxassetid://10733350171", "Catalog",  "Catalog",  2)
+addNavButton("rbxassetid://10723351336", "Settings", "Settings", 3)
 
 -- Adjust nav height to content
 navLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
