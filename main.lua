@@ -1,6 +1,6 @@
 -- ============================================================
 -- OS MENU
--- Enthält: GUI-Kern, Sound-System, Notify-System
+-- Contains: GUI Core, Sound System, Notify System
 -- ============================================================
 
 -- ========================
@@ -531,7 +531,7 @@ local greetLbl = Instance.new("TextLabel", homeScroll)
 greetLbl.Size                = UDim2.new(1, -20, 0, 30)
 greetLbl.Position            = UDim2.new(0, 10, 0, 10)
 greetLbl.BackgroundTransparency = 1
-greetLbl.Text                = "Willkommen, " .. LocalPlayer.DisplayName .. "!"
+greetLbl.Text                = "Welcome, " .. LocalPlayer.DisplayName .. "!"
 greetLbl.Font                = Enum.Font.GothamBold
 greetLbl.TextSize            = 14
 greetLbl.TextColor3          = C.text
@@ -551,11 +551,39 @@ settingsLbl.TextSize            = 14
 settingsLbl.TextColor3          = C.text
 settingsLbl.TextXAlignment      = Enum.TextXAlignment.Left
 
+-- Catalog Panel
+local catalogPanel, catalogScroll = makePanel("Catalog")
+catalogPanel.Size = UDim2.new(0, PANEL_W, 0, 400)
+
+local catalogLbl = Instance.new("TextLabel", catalogScroll)
+catalogLbl.Size                = UDim2.new(1, -20, 0, 30)
+catalogLbl.Position            = UDim2.new(0, 10, 0, 10)
+catalogLbl.BackgroundTransparency = 1
+catalogLbl.Text                = "Catalog Items 📦"
+catalogLbl.Font                = Enum.Font.GothamBold
+catalogLbl.TextSize            = 14
+catalogLbl.TextColor3          = C.text
+catalogLbl.TextXAlignment      = Enum.TextXAlignment.Left
+
+local emojiList = {"🔥", "✨", "🚀", "💎", "🛡️", "⚔️", "🍎", "🍕", "🎮", "🎹", "🚗", "🛸"}
+for i, em in ipairs(emojiList) do
+    local elbl = Instance.new("TextLabel", catalogScroll)
+    elbl.Size                = UDim2.new(0, 40, 0, 40)
+    elbl.Position            = UDim2.new(0, 10 + ((i-1)%8)*45, 0, 50 + math.floor((i-1)/8)*45)
+    elbl.BackgroundTransparency = 0.8
+    elbl.BackgroundColor3    = C.bg3
+    elbl.Text                = em
+    elbl.TextSize            = 20
+    elbl.TextColor3          = C.text
+    corner(elbl, 8)
+end
+
 -- ========================
 -- [10] NAV BUTTONS
 -- ========================
-addNavButton("rbxassetid://11341987215", "Home",     "Home",     1)
-addNavButton("rbxassetid://11341987215", "Settings", "Settings", 2)
+addNavButton("rbxassetid://11341987215", "🏠 Home",     "Home",     1)
+addNavButton("rbxassetid://11341987215", "📖 Catalog",  "Catalog",  2)
+addNavButton("rbxassetid://11341987215", "⚙️ Settings", "Settings", 3)
 
 -- Adjust nav height to content
 navLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -567,7 +595,7 @@ end)
 -- ========================
 _task.spawn(function()
     _task.wait(1.5)
-    Notify.send("OS Menu", "Bereit! GUI geladen ✅", 4)
+    Notify.send("OS Menu", "Ready! GUI loaded ✅", 4)
 end)
 
 -- Global shortcut
@@ -577,4 +605,4 @@ genv.OSMenu = {
     Notify = Notify,
 }
 
-print("[OS MENU] Geladen — GUI, Sound & Notify aktiv")
+print("[OS MENU] Loaded — GUI, Sound & Notify active")
