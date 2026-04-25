@@ -463,17 +463,11 @@ local function addNavButton(icon, tooltip, panelName, order)
     btn.BackgroundTransparency = 0.6
     btn.BorderSizePixel       = 0
     btn.LayoutOrder           = order
-    btn.ZIndex                = 11
+    btn.ZIndex                = 15
     btn.Image                 = icon
     btn.ImageColor3           = Color3.new(1, 1, 1)
     btn.ScaleType             = Enum.ScaleType.Fit
     corner(btn, 10)
-
-    local imgPad = Instance.new("UIPadding", btn)
-    imgPad.PaddingTop    = UDim.new(0, 8)
-    imgPad.PaddingBottom = UDim.new(0, 8)
-    imgPad.PaddingLeft   = UDim.new(0, 8)
-    imgPad.PaddingRight  = UDim.new(0, 8)
 
     -- Tooltip
     local tip = Instance.new("TextLabel", btn)
@@ -557,39 +551,13 @@ settingsLbl.TextSize            = 14
 settingsLbl.TextColor3          = C.text
 settingsLbl.TextXAlignment      = Enum.TextXAlignment.Left
 
--- Catalog Panel
-local catalogPanel, catalogScroll = makePanel("Catalog")
-catalogPanel.Size = UDim2.new(0, PANEL_W, 0, 400)
 
-local catalogLbl = Instance.new("TextLabel", catalogScroll)
-catalogLbl.Size                = UDim2.new(1, -20, 0, 30)
-catalogLbl.Position            = UDim2.new(0, 10, 0, 10)
-catalogLbl.BackgroundTransparency = 1
-catalogLbl.Text                = "Catalog Items 📦"
-catalogLbl.Font                = Enum.Font.GothamBold
-catalogLbl.TextSize            = 14
-catalogLbl.TextColor3          = C.text
-catalogLbl.TextXAlignment      = Enum.TextXAlignment.Left
-
-local emojiList = {"🔥", "✨", "🚀", "💎", "🛡️", "⚔️", "🍎", "🍕", "🎮", "🎹", "🚗", "🛸"}
-for i, em in ipairs(emojiList) do
-    local elbl = Instance.new("TextLabel", catalogScroll)
-    elbl.Size                = UDim2.new(0, 40, 0, 40)
-    elbl.Position            = UDim2.new(0, 10 + ((i-1)%8)*45, 0, 50 + math.floor((i-1)/8)*45)
-    elbl.BackgroundTransparency = 0.8
-    elbl.BackgroundColor3    = C.bg3
-    elbl.Text                = em
-    elbl.TextSize            = 20
-    elbl.TextColor3          = C.text
-    corner(elbl, 8)
-end
 
 -- ========================
 -- [10] NAV BUTTONS
 -- ========================
-addNavButton("rbxassetid://10723345518", "Home",     "Home",     1)
-addNavButton("rbxassetid://10733350171", "Catalog",  "Catalog",  2)
-addNavButton("rbxassetid://10723351336", "Settings", "Settings", 3)
+addNavButton("rbxassetid://11341987215", "Home", "Home", 1)
+addNavButton("rbxassetid://128973582333871", "Settings", "Settings", 2)
 
 -- Adjust nav height to content
 navLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
